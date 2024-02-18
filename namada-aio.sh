@@ -123,7 +123,7 @@ EOF
        echo "Bạn đã hoàn tất cài đặt script OriginStake - Namada All in One. Đây là thông tin hiện tại"
        echo "- Namada Version: $namada_version"
        echo "- Cometbft Version: $cometbft_version"
-       echo "Đã tạo file namadad.service. Bạn có thể quay trở về menu đầu tiên và bắt đầu khởi động Namada."
+       echo "- Đã tạo file namadad.service. Bạn có thể quay trở về menu đầu tiên và bắt đầu khởi động Namada."
        exit 0;;
 
     2) echo "Bạn đã chọn 'Thoát'."
