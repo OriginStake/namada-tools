@@ -7,8 +7,9 @@ function namada_service_menu {
         echo "1/ Start Namada Service as a Post-Genesis"
         echo "2/ Stop Namada Service"
         echo "3/ Check Namada Service Status"
-        echo "4/ Go back to the previous menu"
-        echo -n "Enter your choice [1-4]: "
+        echo "4/ Remove all Namada install (CAUTION)"
+        echo "5/ Go back to the previous menu"
+        echo -n "Enter your choice [1-5]: "
         read service_option
         case $service_option in
             1) echo "Starting Namada Service as a Post-Genesis..."
@@ -25,7 +26,43 @@ function namada_service_menu {
                systemctl status namadad
                echo "Press any key to continue..."
                read -n 1 -s;;
-            4) echo "Going back to the previous menu..."
+            4) echo "You have chosen 'Remove all Namada install (CAUTION)'."
+               echo "The system will automatically delete the current Namada working directory and back it up to the following path: $HOME/namada_backup/. Please be careful and make sure that you have backed up the necessary files. This action cannot be undone."
+               echo "Are you sure you want to proceed? (Yes/No):"
+               read confirmation
+               if [[ $confirmation == "Yes" ]]; then
+                   echo "Please confirm again (Yes/No):"
+                   read confirmation2
+                   if [[ $confirmation2 == "Yes" ]]; then
+                       echo "Please confirm one last time (Yes/No):"
+                       read confirmation3
+                       if [[ $confirmation3 == "Yes" ]]; then
+                           echo "Removing all Namada install..."
+                           cd $HOME && mkdir $HOME/namada_backup
+                           cp -r $HOME/.local/share/namada/ $HOME/namada_backup/
+                           systemctl stop namadad && systemctl disable namadad
+                           rm /etc/systemd/system/namada* -rf
+                           rm $(which namada) -rf
+                           rm /usr/local/bin/namada* /usr/local/bin/cometbft -rf
+                           rm $HOME/.namada* -rf
+                           rm $HOME/.local/share/namada -rf
+                           rm $HOME/namada -rf
+                           rm $HOME/cometbft -rf
+                           echo "All Namada installs have been removed."
+                           sleep 3
+                       else
+                           echo "Operation cancelled."
+                           sleep 3
+                       fi
+                   else
+                       echo "Operation cancelled."
+                       sleep 3
+                   fi
+               else
+                   echo "Operation cancelled."
+                   sleep 3
+               fi;;
+            5) echo "Going back to the previous menu..."
                return;;
             *) echo "Invalid choice. Please try again."
                sleep 3;;
@@ -38,7 +75,7 @@ do
   clear
   echo "Welcome to OriginStake, please choose an option:"
   echo "1/ Install Namada - All in One Script"
-  echo "2/ Start/Stop/Check Namada Service"
+  echo "2/ Start/Stop/Check/Remove Namada Service"
   echo "3/ Exit"
   echo -n "Enter your choice [1-3]: "
 
