@@ -1,12 +1,39 @@
 #!/bin/bash
 
+function namada_service_menu {
+    while true
+    do
+        echo "Choose an option:"
+        echo "1/ Start Namada Service"
+        echo "2/ Check Namada Server status"
+        echo "3/ Go back to the previous menu"
+        echo -n "Enter your choice [1-3]: "
+        read service_option
+        case $service_option in
+            1) echo "Starting Namada Service..."
+               sudo systemctl enable namadad && sudo systemctl start namadad
+               echo "Namada Service has been started."
+               sleep 3;;
+            2) echo "Checking Namada Server status..."
+               systemctl status namadad
+               echo "Press any key to continue..."
+               read -n 1 -s;;
+            3) echo "Going back to the previous menu..."
+               return;;
+            *) echo "Invalid choice. Please try again."
+               sleep 3;;
+        esac
+    done
+}
+
 while true
 do
   clear
   echo "Welcome to OriginStake, please choose an option:"
   echo "1/ Install Namada - All in One Script"
-  echo "2/ Exit"
-  echo -n "Enter your choice [1-2]: "
+  echo "2/ Start Namada"
+  echo "3/ Exit"
+  echo -n "Enter your choice [1-3]: "
 
   read option
   case $option in
@@ -124,9 +151,11 @@ EOF
        echo "- Namada Version: $namada_version"
        echo "- Cometbft Version: $cometbft_version"
        echo "- A namadad.service file has been created. You can return to the main menu and start Namada."
-       exit 0;;
+       sleep 3;;
 
-    2) echo "You have chosen 'Exit'."
+    2) namada_service_menu;;
+
+    3) echo "You have chosen 'Exit'."
        exit 0;;
     *) echo "Invalid choice. Please try again."
        sleep 3;;
