@@ -5,20 +5,25 @@ function namada_service_menu {
     do
         echo "Choose an option:"
         echo "1/ Start Namada Service"
-        echo "2/ Check Namada Server status"
-        echo "3/ Go back to the previous menu"
-        echo -n "Enter your choice [1-3]: "
+        echo "2/ Stop Namada Service"
+        echo "3/ Check Namada Service Status"
+        echo "4/ Go back to the previous menu"
+        echo -n "Enter your choice [1-4]: "
         read service_option
         case $service_option in
             1) echo "Starting Namada Service..."
                sudo systemctl enable namadad && sudo systemctl start namadad
                echo "Namada Service has been started."
                sleep 3;;
-            2) echo "Checking Namada Server status..."
+            2) echo "Stopping Namada Service..."
+               sudo systemctl stop namadad
+               echo "Namada Service has been stopped."
+               sleep 3;;
+            3) echo "Checking Namada Service status..."
                systemctl status namadad
                echo "Press any key to continue..."
                read -n 1 -s;;
-            3) echo "Going back to the previous menu..."
+            4) echo "Going back to the previous menu..."
                return;;
             *) echo "Invalid choice. Please try again."
                sleep 3;;
