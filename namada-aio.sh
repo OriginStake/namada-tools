@@ -3,74 +3,74 @@
 while true
 do
   clear
-  echo "OriginStake xin chào, vui lòng lựa chọn chức năng sau:"
-  echo "1/ Cài đặt Namada - All in One Script"
-  echo "2/ Thoát"
-  echo -n "Chọn lựa chọn của bạn [1-2]: "
+  echo "Welcome to OriginStake, please choose an option:"
+  echo "1/ Install Namada - All in One Script"
+  echo "2/ Exit"
+  echo -n "Enter your choice [1-2]: "
 
   read option
   case $option in
-    1) echo "Bạn đã chọn 'Cài đặt Namada - All in One Script'."
-       echo "Vui lòng chọn hệ điều hành của bạn:"
+    1) echo "You have chosen 'Install Namada - All in One Script'."
+       echo "Please choose your operating system:"
        echo "1/ Linux"
-       # echo "2/ MacOS (chưa hỗ trợ)"
-       echo -n "Chọn lựa chọn của bạn [1]: "
+       # echo "2/ MacOS (not yet supported)"
+       echo -n "Enter your choice [1]: "
        read os_option
        case $os_option in
            1) OPERATING_SYSTEM="linux"; OPERATING_SYSTEM_CAP="Linux";;
-           *) echo "Lựa chọn không hợp lệ. Vui lòng thử lại."
+           *) echo "Invalid choice. Please try again."
               sleep 3
               continue;;
        esac
        ARCHITECTURE="x86_64"
-       # Kiểm tra xem jq đã được cài đặt chưa
+       # Check if jq is installed
        if ! command -v jq &> /dev/null
        then
-           echo "jq chưa được cài đặt. Đang cài đặt..."
-           # Cài đặt jq
+           echo "jq is not installed. Installing..."
+           # Install jq
            case $OPERATING_SYSTEM in
                "linux") sudo apt-get install jq;;
                "darwin") brew install jq;;
            esac
-           echo "jq đã được cài đặt thành công."
+           echo "jq has been installed successfully."
        else
-           echo "jq đã được cài đặt."
+           echo "jq is already installed."
        fi
-       # Cài đặt Namada
-       echo "Kiểm tra Namada..."
+       # Install Namada
+       echo "Checking Namada..."
        if ! command -v namada &> /dev/null && ! command -v namadaw &> /dev/null && ! command -v namadan &> /dev/null && ! command -v namadac &> /dev/null
        then
-           echo "Namada chưa được cài đặt. Đang cài đặt..."
+           echo "Namada is not installed. Installing..."
            latest_release_url=$(curl -s "https://api.github.com/repos/anoma/namada/releases/latest" | jq -r ".assets[] | select(.name | test(\"$OPERATING_SYSTEM_CAP-$ARCHITECTURE\")) | .browser_download_url")
            if [ -z "$latest_release_url" ]; then
-               echo "Không thể xác định URL tải xuống. Vui lòng kiểm tra lại."
+               echo "Unable to determine download URL. Please check again."
                exit 1
            fi
            curl -L $latest_release_url -o namada.tar.gz
            if [ $? -ne 0 ]; then
-               echo "Không thể tải xuống tệp. Vui lòng kiểm tra lại."
+               echo "Unable to download the file. Please check again."
                exit 1
            fi
            tar -xvf namada.tar.gz
            if [ $? -ne 0 ]; then
-               echo "Không thể giải nén tệp. Vui lòng kiểm tra lại."
+               echo "Unable to extract the file. Please check again."
                exit 1
            fi
            dirname=$(tar -tzf namada.tar.gz | head -1 | cut -f1 -d"/")
            sudo mv $dirname/* /usr/local/bin/
            rm -r $dirname namada.tar.gz
            namada_version=$(namada --version)
-           echo "Bạn đã cài đặt Binary Namada thành công, Version hiện tại là $namada_version"
+           echo "You have successfully installed Namada Binary, the current version is $namada_version"
        else
-           echo "Namada đã được cài đặt."
+           echo "Namada is already installed."
            namada_version=$(namada --version)
-           echo "Version hiện tại của Namada là $namada_version"
+           echo "The current version of Namada is $namada_version"
        fi
-       # Cài đặt cometbft
-       echo "Kiểm tra CometBFT..."
+       # Install cometbft
+       echo "Checking CometBFT..."
        if ! command -v cometbft &> /dev/null
        then
-           echo "CometBFT chưa được cài đặt. Đang cài đặt..."
+           echo "CometBFT is not installed. Installing..."
            cometbft_release_info=$(curl -s "https://api.github.com/repos/cometbft/cometbft/releases/tags/v0.37.2")
            machine=$(uname -m)
            if [ "$machine" == "x86_64" ]; then
@@ -78,24 +78,24 @@ do
            fi
            cometbft_download_url=$(echo $cometbft_release_info | jq -r ".assets[] | select(.name | test(\"$OPERATING_SYSTEM\")) | select(.name | test(\"$machine\")) | .browser_download_url")
            if [ "$cometbft_download_url" == "null" ]; then
-             echo "Không có tệp nhị phân nào để tải xuống từ tag này."
+             echo "There are no binaries to download from this tag."
              exit 1
            fi
            wget "$cometbft_download_url"
            tar -xzvf cometbft*.tar.gz
            sudo cp ./cometbft /usr/local/bin/
-           rm cometbft*.tar.gz  # Xóa tệp tarball sau khi đã sao chép tệp nhị phân
-           rm CHANGELOG.md LICENSE README.md SECURITY.md UPGRADING.md cometbft  # Xóa các tệp giải nén không cần thiết
+           rm cometbft*.tar.gz  # Remove the tarball file after the binary file has been copied
+           rm CHANGELOG.md LICENSE README.md SECURITY.md UPGRADING.md cometbft  # Remove unnecessary extracted files
            cometbft_version=$(cometbft version)
-           echo "Bạn đã cài đặt Binary cometbft thành công, Version hiện tại là $cometbft_version"
+           echo "You have successfully installed cometbft Binary, the current version is $cometbft_version"
        else
-           echo "CometBFT đã được cài đặt."
+           echo "CometBFT is already installed."
            cometbft_version=$(cometbft version)
-           echo "Version hiện tại của CometBFT là $cometbft_version"
+           echo "The current version of CometBFT is $cometbft_version"
        fi
 
-       # Tạo file service namadad
-       echo "Tạo file service namadad..."
+       # Create namadad service file
+       echo "Creating namadad service file..."
        sudo bash -c "cat > /etc/systemd/system/namadad.service" << EOF
 [Unit]
 Description=namada
@@ -116,19 +116,19 @@ WantedBy=multi-user.target
 EOF
        sudo systemctl daemon-reload
        sudo systemctl enable namadad
-       echo "File service namadad đã được tạo và kích hoạt."
+       echo "The namadad service file has been created and activated."
 
        # Clear terminal and display final message
        clear
-       echo "Bạn đã hoàn tất cài đặt script OriginStake - Namada All in One. Đây là thông tin hiện tại"
+       echo "You have successfully completed the installation of the OriginStake - Namada All in One script. Here is the current information:"
        echo "- Namada Version: $namada_version"
        echo "- Cometbft Version: $cometbft_version"
-       echo "- Đã tạo file namadad.service. Bạn có thể quay trở về menu đầu tiên và bắt đầu khởi động Namada."
+       echo "- A namadad.service file has been created. You can return to the main menu and start Namada."
        exit 0;;
 
-    2) echo "Bạn đã chọn 'Thoát'."
+    2) echo "You have chosen 'Exit'."
        exit 0;;
-    *) echo "Lựa chọn không hợp lệ. Vui lòng thử lại."
+    *) echo "Invalid choice. Please try again."
        sleep 3;;
   esac
 done
