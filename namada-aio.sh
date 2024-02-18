@@ -1,5 +1,7 @@
 #!/bin/bash
 
+NEWCHAINID=shielded-expedition.88f17d1d14
+
 function namada_service_menu {
     while true
     do
@@ -13,7 +15,6 @@ function namada_service_menu {
         read service_option
         case $service_option in
             1) echo "Starting Namada Service as a Post-Genesis..."
-               NEWCHAINID=shielded-expedition.88f17d1d14
                cd $HOME && namada client utils join-network --chain-id $NEWCHAINID
                sudo systemctl enable namadad && sudo systemctl start namadad
                echo "Namada Service has been started."
@@ -73,7 +74,20 @@ function namada_service_menu {
 while true
 do
   clear
-  echo "Welcome to OriginStake, please choose an option:"
+  echo "Welcome to OriginStake - Namada AIO Install Script"
+  echo "Here are your current settings:"
+  echo "ChainID: $NEWCHAINID"
+  if command -v namada &> /dev/null; then
+    echo "Namada version: $(namada --version)"
+  else
+    echo "Namada: Not installed"
+  fi
+  if command -v cometbft &> /dev/null; then
+    echo "CometBFT version: $(cometbft version)"
+  else
+    echo "CometBFT: Not installed"
+  fi
+  echo "Please choose an option:"
   echo "1/ Install Namada - All in One Script"
   echo "2/ Start/Stop/Check/Remove Namada Service"
   echo "3/ Exit"
