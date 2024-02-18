@@ -56,11 +56,15 @@ do
               continue;;
        esac
        ARCHITECTURE="x86_64"
+
+       echo "Updating and upgrading the system..."
+       sudo apt update -y && sudo apt upgrade -y
+
        if ! command -v jq &> /dev/null
        then
            echo "jq is not installed. Installing..."
            case $OPERATING_SYSTEM in
-               "linux") sudo apt-get install jq;;
+               "linux") sudo apt-get install -y jq;;
            esac
            echo "jq has been installed successfully."
        else
