@@ -84,7 +84,7 @@ do
   echo -e "${BOLD}Here are your current settings:${NC}"
   echo -e "${BOLD}ChainID:${NC} ${GREEN}$NEWCHAINID${NC}"
   if command -v namada &> /dev/null; then
-    namada_version=$(namada --version | cut -d ' ' -f 2)
+    namada_version=$(namada --version | awk '{print \$2}')
     echo -e "${BOLD}Namada version:${NC} ${GREEN}$namada_version${NC}"
   else
     echo -e "${BOLD}Namada:${NC} ${RED}Not installed${NC}"
@@ -150,11 +150,11 @@ do
            dirname=$(tar -tzf namada.tar.gz | head -1 | cut -f1 -d"/")
            sudo mv $dirname/* /usr/local/bin/
            rm -r $dirname namada.tar.gz
-           namada_version=$(namada --version | cut -d ' ' -f 2)
+           namada_version=$(namada --version | awk '{print \$2}')
            echo "You have successfully installed Namada Binary, the current version is $namada_version"
        else
            echo "Namada is already installed."
-           namada_version=$(namada --version | cut -d ' ' -f 2)
+           namada_version=$(namada --version | awk '{print \$2}')
            echo "The current version of Namada is $namada_version"
        fi
        echo "Checking CometBFT..."
