@@ -36,7 +36,7 @@ do
   clear
   echo "Welcome to OriginStake, please choose an option:"
   echo "1/ Install Namada - All in One Script"
-  echo "2/ Start Namada"
+  echo "2/ Start/Stop/Check Namada Service"
   echo "3/ Exit"
   echo -n "Enter your choice [1-3]: "
 
@@ -45,7 +45,6 @@ do
     1) echo "You have chosen 'Install Namada - All in One Script'."
        echo "Please choose your operating system:"
        echo "1/ Linux"
-       # echo "2/ MacOS (not yet supported)"
        echo -n "Enter your choice [1]: "
        read os_option
        case $os_option in
@@ -55,20 +54,16 @@ do
               continue;;
        esac
        ARCHITECTURE="x86_64"
-       # Check if jq is installed
        if ! command -v jq &> /dev/null
        then
            echo "jq is not installed. Installing..."
-           # Install jq
            case $OPERATING_SYSTEM in
                "linux") sudo apt-get install jq;;
-               "darwin") brew install jq;;
            esac
            echo "jq has been installed successfully."
        else
            echo "jq is already installed."
        fi
-       # Install Namada
        echo "Checking Namada..."
        if ! command -v namada &> /dev/null && ! command -v namadaw &> /dev/null && ! command -v namadan &> /dev/null && ! command -v namadac &> /dev/null
        then
@@ -98,7 +93,6 @@ do
            namada_version=$(namada --version)
            echo "The current version of Namada is $namada_version"
        fi
-       # Install cometbft
        echo "Checking CometBFT..."
        if ! command -v cometbft &> /dev/null
        then
@@ -116,8 +110,8 @@ do
            wget "$cometbft_download_url"
            tar -xzvf cometbft*.tar.gz
            sudo cp ./cometbft /usr/local/bin/
-           rm cometbft*.tar.gz  # Remove the tarball file after the binary file has been copied
-           rm CHANGELOG.md LICENSE README.md SECURITY.md UPGRADING.md cometbft  # Remove unnecessary extracted files
+           rm cometbft*.tar.gz
+           rm CHANGELOG.md LICENSE README.md SECURITY.md UPGRADING.md cometbft
            cometbft_version=$(cometbft version)
            echo "You have successfully installed cometbft Binary, the current version is $cometbft_version"
        else
@@ -126,7 +120,6 @@ do
            echo "The current version of CometBFT is $cometbft_version"
        fi
 
-       # Create namadad service file
        echo "Creating namadad service file..."
        sudo bash -c "cat > /etc/systemd/system/namadad.service" << EOF
 [Unit]
@@ -150,7 +143,6 @@ EOF
        sudo systemctl enable namadad
        echo "The namadad service file has been created and activated."
 
-       # Clear terminal and display final message
        clear
        echo "You have successfully completed the installation of the OriginStake - Namada All in One script. Here is the current information:"
        echo "- Namada Version: $namada_version"
