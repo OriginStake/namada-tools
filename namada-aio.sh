@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Define some colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+BOLD='\033[1m'
+NC='\033[0m' # No Color
+
 NEWCHAINID=shielded-expedition.88f17d1d14
 
 function namada_service_menu {
@@ -74,18 +80,18 @@ function namada_service_menu {
 while true
 do
   clear
-  echo -e "\033[32mWelcome to OriginStake - Namada AIO Install Script\033[0m"
-  echo -e "\033[32mHere are your current settings:\033[0m"
-  echo -e "\033[32mChainID: $NEWCHAINID\033[0m"
+  echo -e "${GREEN}Welcome to OriginStake - Namada AIO Install Script${NC}"
+  echo -e "${GREEN}Here are your current settings:${NC}"
+  echo -e "${BOLD}ChainID:${NC} ${GREEN}$NEWCHAINID${NC}"
   if command -v namada &> /dev/null; then
-    echo -e "\033[32mNamada version: $(namada --version)\033[0m"
+    echo -e "${BOLD}Namada version:${NC} ${GREEN}$(namada --version)${NC}"
   else
-    echo -e "\033[32mNamada: Not installed\033[0m"
+    echo -e "${BOLD}Namada:${NC} ${RED}Not installed${NC}"
   fi
   if command -v cometbft &> /dev/null; then
-    echo -e "\033[32mCometBFT version: $(cometbft version)\033[0m"
+    echo -e "${BOLD}CometBFT version:${NC} ${GREEN}$(cometbft version)${NC}"
   else
-    echo -e "\033[32mCometBFT: Not installed\033[0m"
+    echo -e "${BOLD}CometBFT:${NC} ${RED}Not installed${NC}"
   fi
   echo "Please choose an option:"
   echo "1/ Install Namada - All in One Script"
@@ -201,9 +207,9 @@ EOF
        echo "The namadad service file has been created and activated."
 
        clear
-       echo -e "\033[32mYou have successfully completed the installation of the OriginStake - Namada All in One script. Here is the current information:\033[0m"
-       echo -e "\033[32m- Namada Version: $namada_version\033[0m"
-       echo -e "\033[32m- Cometbft Version: $cometbft_version\033[0m"
+       echo -e "${GREEN}You have successfully completed the installation of the OriginStake - Namada All in One script. Here is the current information:${NC}"
+       echo -e "${BOLD}Namada Version:${NC} ${GREEN}$namada_version${NC}"
+       echo -e "${BOLD}Cometbft Version:${NC} ${GREEN}$cometbft_version${NC}"
        echo "- A namadad.service file has been created. You can return to the main menu and start Namada."
        sleep 3;;
 
