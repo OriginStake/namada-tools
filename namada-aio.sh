@@ -80,11 +80,12 @@ function namada_service_menu {
 while true
 do
   clear
-  echo -e "${GREEN}Welcome to OriginStake - Namada AIO Install Script${NC}"
-  echo -e "${GREEN}Here are your current settings:${NC}"
+  echo -e "${BOLD}Welcome to OriginStake - Namada AIO Install Script${NC}"
+  echo -e "${BOLD}Here are your current settings:${NC}"
   echo -e "${BOLD}ChainID:${NC} ${GREEN}$NEWCHAINID${NC}"
   if command -v namada &> /dev/null; then
-    echo -e "${BOLD}Namada version:${NC} ${GREEN}$(namada --version)${NC}"
+    namada_version=$(namada --version | awk '{print \$2}')
+    echo -e "${BOLD}Namada version:${NC} ${GREEN}$namada_version${NC}"
   else
     echo -e "${BOLD}Namada:${NC} ${RED}Not installed${NC}"
   fi
@@ -149,11 +150,11 @@ do
            dirname=$(tar -tzf namada.tar.gz | head -1 | cut -f1 -d"/")
            sudo mv $dirname/* /usr/local/bin/
            rm -r $dirname namada.tar.gz
-           namada_version=$(namada --version)
+           namada_version=$(namada --version | awk '{print \$2}')
            echo "You have successfully installed Namada Binary, the current version is $namada_version"
        else
            echo "Namada is already installed."
-           namada_version=$(namada --version)
+           namada_version=$(namada --version | awk '{print \$2}')
            echo "The current version of Namada is $namada_version"
        fi
        echo "Checking CometBFT..."
@@ -207,7 +208,7 @@ EOF
        echo "The namadad service file has been created and activated."
 
        clear
-       echo -e "${GREEN}You have successfully completed the installation of the OriginStake - Namada All in One script. Here is the current information:${NC}"
+       echo -e "${BOLD}You have successfully completed the installation of the OriginStake - Namada All in One script. Here is the current information:${NC}"
        echo -e "${BOLD}Namada Version:${NC} ${GREEN}$namada_version${NC}"
        echo -e "${BOLD}Cometbft Version:${NC} ${GREEN}$cometbft_version${NC}"
        echo "- A namadad.service file has been created. You can return to the main menu and start Namada."
