@@ -74,18 +74,18 @@ function namada_service_menu {
 while true
 do
   clear
-  echo "Welcome to OriginStake - Namada AIO Install Script"
-  echo "Here are your current settings:"
-  echo "ChainID: $NEWCHAINID"
+  echo -e "\033[32mWelcome to OriginStake - Namada AIO Install Script\033[0m"
+  echo -e "\033[32mHere are your current settings:\033[0m"
+  echo -e "\033[32mChainID: $NEWCHAINID\033[0m"
   if command -v namada &> /dev/null; then
-    echo "Namada version: $(namada --version)"
+    echo -e "\033[32mNamada version: $(namada --version)\033[0m"
   else
-    echo "Namada: Not installed"
+    echo -e "\033[32mNamada: Not installed\033[0m"
   fi
   if command -v cometbft &> /dev/null; then
-    echo "CometBFT version: $(cometbft version)"
+    echo -e "\033[32mCometBFT version: $(cometbft version)\033[0m"
   else
-    echo "CometBFT: Not installed"
+    echo -e "\033[32mCometBFT: Not installed\033[0m"
   fi
   echo "Please choose an option:"
   echo "1/ Install Namada - All in One Script"
@@ -201,9 +201,9 @@ EOF
        echo "The namadad service file has been created and activated."
 
        clear
-       echo "You have successfully completed the installation of the OriginStake - Namada All in One script. Here is the current information:"
-       echo "- Namada Version: $namada_version"
-       echo "- Cometbft Version: $cometbft_version"
+       echo -e "\033[32mYou have successfully completed the installation of the OriginStake - Namada All in One script. Here is the current information:\033[0m"
+       echo -e "\033[32m- Namada Version: $namada_version\033[0m"
+       echo -e "\033[32m- Cometbft Version: $cometbft_version\033[0m"
        echo "- A namadad.service file has been created. You can return to the main menu and start Namada."
        sleep 3;;
 
