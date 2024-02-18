@@ -30,13 +30,13 @@ function namada_service_menu {
                echo "The system will automatically delete the current Namada working directory and back it up to the following path: $HOME/namada_backup/. Please be careful and make sure that you have backed up the necessary files. This action cannot be undone."
                echo "Are you sure you want to proceed? (Yes/No):"
                read confirmation
-               if [[ $confirmation == "Yes" ]]; then
+               if [[ "${confirmation,,}" == "yes" ]]; then
                    echo "Please confirm again (Yes/No):"
                    read confirmation2
-                   if [[ $confirmation2 == "Yes" ]]; then
+                   if [[ "${confirmation2,,}" == "yes" ]]; then
                        echo "Please confirm one last time (Yes/No):"
                        read confirmation3
-                       if [[ $confirmation3 == "Yes" ]]; then
+                       if [[ "${confirmation3,,}" == "yes" ]]; then
                            echo "Removing all Namada install..."
                            cd $HOME && mkdir $HOME/namada_backup
                            cp -r $HOME/.local/share/namada/ $HOME/namada_backup/
