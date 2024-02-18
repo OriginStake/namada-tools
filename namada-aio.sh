@@ -4,14 +4,16 @@ function namada_service_menu {
     while true
     do
         echo "Choose an option:"
-        echo "1/ Start Namada Service"
+        echo "1/ Start Namada Service as a Post-Genesis"
         echo "2/ Stop Namada Service"
         echo "3/ Check Namada Service Status"
         echo "4/ Go back to the previous menu"
         echo -n "Enter your choice [1-4]: "
         read service_option
         case $service_option in
-            1) echo "Starting Namada Service..."
+            1) echo "Starting Namada Service as a Post-Genesis..."
+               NEWCHAINID=shielded-expedition.88f17d1d14
+               cd $HOME && namada client utils join-network --chain-id $NEWCHAINID
                sudo systemctl enable namadad && sudo systemctl start namadad
                echo "Namada Service has been started."
                sleep 3;;
