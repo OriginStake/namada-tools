@@ -8,7 +8,7 @@ NC='\033[0m' # No Color
 
 NEWCHAINID=shielded-expedition.88f17d1d14
 SCRIPT_NAME="namada-aio.sh"
-CURRENT_VERSION="1.1.7"
+CURRENT_VERSION="1.1.8"
 
 function check_for_updates {
     # Get the latest version number from the 'version.txt' file in your GitHub repository
@@ -169,7 +169,8 @@ function security_namada_menu {
 while true
 do
   clear
-  echo -e "${BOLD}Welcome to OriginStake - Namada AIO Install Script${NC}"
+  echo -e "\e[6;1mWelcome to OriginStake - Namada AIO Install Script${NC}\n"
+  echo -e "\n"
   echo -e "${BOLD}Here are your current settings:${NC}"
   echo -e "${BOLD}ChainID:${NC} ${GREEN}$NEWCHAINID${NC}"
   if command -v namada &> /dev/null; then
@@ -183,6 +184,7 @@ do
   else
     echo -e "${BOLD}CometBFT:${NC} ${RED}Not installed${NC}"
   fi
+  echo -e "\n"
   echo "Please choose an option:"
   echo "1/ Install Namada - All in One Script"
   echo "2/ Start/Stop/Check/Remove Namada Service"
