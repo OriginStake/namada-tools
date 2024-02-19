@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Download the content from the namada-aio.sh file and save it as namadaio
-wget -O namadaio https://raw.githubusercontent.com/tungdh1/namada-tools/main/namada-aio.sh
+curl -sL https://raw.githubusercontent.com/tungdh1/namada-tools/main/namada-aio.sh | sudo tee /usr/local/bin/namadaio > /dev/null && sudo 
 
 # Set execute permissions for the namadaio file
 chmod +x namadaio
