@@ -1,5 +1,15 @@
 #!/bin/bash
 
+# Create the namada-aio directory
+mkdir -p $HOME/namada-aio/
+
+# Create the namadaio script file
+touch $HOME/namada-aio/namadaio
+
+# Add the script code to the namadaio file
+cat <<EOF > $HOME/namada-aio/namadaio
+#!/bin/bash
+
 # Define some colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -8,7 +18,7 @@ NC='\033[0m' # No Color
 
 NEWCHAINID=shielded-expedition.88f17d1d14
 SCRIPT_NAME="namada-aio.sh"
-CURRENT_VERSION="1.1.5"
+CURRENT_VERSION="1.1.6"
 
 function check_for_updates {
     # Get the latest version number from the 'version.txt' file in your GitHub repository
@@ -237,7 +247,7 @@ do
        if ! command -v namada &> /dev/null && ! command -v namadaw &> /dev/null && ! command -v namadan &> /dev/null && ! command -v namadac &> /dev/null
        then
            echo "Namada is not installed. Installing..."
-           latest_release_url=$(curl -s "https://api.github.com/repos/anoma/namada/releases/latest" | jq -r ".assets[] | select(.name | test(\"$OPERATING_SYSTEM_CAP-$ARCHITECTURE\")) | .browser_download_url")
+           latest_release_url=$(curl -s https://raw.githubusercontent.com/tungdh1/namada-tools/main/version.txt)
            if [ -z "$latest_release_url" ]; then
                echo "Unable to determine download URL. Please check again."
                exit 1
