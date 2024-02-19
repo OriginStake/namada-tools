@@ -7,6 +7,55 @@ BOLD='\033[1m'
 NC='\033[0m' # No Color
 
 NEWCHAINID=shielded-expedition.88f17d1d14
+SCRIPT_NAME="namada-aio.sh"
+CURRENT_VERSION="1.0"
+
+function check_for_updates {
+    # Get the latest version number from the 'version.txt' file in your GitHub repository
+    latest_version=$(curl -s https://raw.githubusercontent.com/tungdh1/namada-tools/main/version.txt)
+    
+    # Check if the latest version is greater than the current version
+    if (( $(echo "$latest_version > $CURRENT_VERSION" | bc -l) )); then
+        echo "A new version of the script is available. Would you like to update? (Yes/No)"
+        read update_confirmation
+        if [[ "${update_confirmation,,}" == "yes" ]]; then
+            # Download the latest version of the script and replace the current version
+            wget -O $SCRIPT_NAME https://raw.githubusercontent.com/tungdh1/namada-tools/main/$SCRIPT_NAME
+            chmod +x $SCRIPT_NAME
+            echo "The script has been updated to version $latest_version."
+            exit 0
+        else
+            echo "Update cancelled."
+        fi
+    else
+        echo "You are running the latest version of the script."
+    fi
+}
+
+function manage_script {
+    while true
+    do
+        echo "Choose an option:"
+        echo "1/ Update script"
+        echo "2/ Remove script"
+        echo "3/ Go back to the previous menu"
+        echo -n "Enter your choice [1-3]: "
+        read script_option
+        case $script_option in
+            1) check_for_updates;;
+            2) echo "Are you sure you want to remove the script? (Yes/No)"
+               read remove_confirmation
+               if [[ "${remove_confirmation,,}" == "yes" ]]; then
+                   rm $SCRIPT_NAME
+                   echo "The script has been removed."
+               else
+                   echo "Remove cancelled."
+               fi;;
+            3) return;;
+            *) echo "Invalid choice. Please try again.";;
+        esac
+    done
+}
 
 function namada_service_menu {
     while true
@@ -97,8 +146,9 @@ do
   echo "Please choose an option:"
   echo "1/ Install Namada - All in One Script"
   echo "2/ Start/Stop/Check/Remove Namada Service"
-  echo "3/ Exit"
-  echo -n "Enter your choice [1-3]: "
+  echo "3/ Manage Script"
+  echo "4/ Exit"
+  echo -n "Enter your choice [1-4]: "
 
   read option
   case $option in
@@ -216,7 +266,9 @@ EOF
 
     2) namada_service_menu;;
 
-    3) echo "You have chosen 'Exit'."
+    3) manage_script;;
+
+    4) echo "You have chosen 'Exit'."
        exit 0;;
     *) echo "Invalid choice. Please try again."
        sleep 3;;
