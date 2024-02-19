@@ -8,7 +8,7 @@ NC='\033[0m' # No Color
 
 NEWCHAINID=shielded-expedition.88f17d1d14
 SCRIPT_NAME="namada-aio.sh"
-CURRENT_VERSION="1.1.6"
+CURRENT_VERSION="1.1.7"
 
 function check_for_updates {
     # Get the latest version number from the 'version.txt' file in your GitHub repository
@@ -314,8 +314,8 @@ EOF
 
        clear
        echo -e "${BOLD}You have successfully completed the installation of the OriginStake - Namada All in One script. Here is the current information:${NC}"
-       echo -e "${BOLD}Namada Version:${NC} ${GREEN}$namada_version${NC}"
-       echo -e "${BOLD}Cometbft Version:${NC} ${GREEN}$cometbft_version${NC}"
+       echo -e "${BOLD}- Namada Version:${NC} ${GREEN}$namada_version${NC}"
+       echo -e "${BOLD}- Cometbft Version:${NC} ${GREEN}$cometbft_version${NC}"
        echo "- A namadad.service file has been created. You can return to the main menu and start Namada."
        sleep 3;;
 
