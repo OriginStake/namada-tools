@@ -8,7 +8,7 @@ NC='\033[0m' # No Color
 
 NEWCHAINID=shielded-expedition.88f17d1d14
 SCRIPT_NAME="namada-aio.sh"
-CURRENT_VERSION="1.1"
+CURRENT_VERSION="1.1.1"
 
 function check_for_updates {
     # Get the latest version number from the 'version.txt' file in your GitHub repository
@@ -16,19 +16,19 @@ function check_for_updates {
     
     # Check if the latest version is greater than the current version
     if (( $(echo "$latest_version > $CURRENT_VERSION" | bc -l) )); then
-        echo "A new version of the script is available. Would you like to update? (Yes/No)"
+        echo -e "${RED}A new version of the script is available. Would you like to update? (Yes/No)${NC}"
         read update_confirmation
         if [[ "${update_confirmation,,}" == "yes" ]]; then
             # Download the latest version of the script and replace the current version
             wget -O $SCRIPT_NAME https://raw.githubusercontent.com/tungdh1/namada-tools/main/$SCRIPT_NAME
             chmod +x $SCRIPT_NAME
-            echo "The script has been updated to version $latest_version."
+            echo -e "${GREEN}The script has been updated to version $latest_version.${NC}"
             exit 0
         else
             echo "Update cancelled."
         fi
     else
-        echo "You are running the latest version of the script."
+        echo -e "${GREEN}You are running the latest version of the script.${NC}"
     fi
 }
 
