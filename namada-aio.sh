@@ -8,7 +8,7 @@ NC='\033[0m' # No Color
 
 NEWCHAINID=shielded-expedition.88f17d1d14
 SCRIPT_NAME="namada-aio.sh"
-CURRENT_VERSION="1.1.3"
+CURRENT_VERSION="1.1.4"
 
 function check_for_updates {
     # Get the latest version number from the 'version.txt' file in your GitHub repository
@@ -28,7 +28,7 @@ function check_for_updates {
             echo "Update cancelled."
         fi
     else
-        echo -e "${GREEN}You are running the latest version of the script.${NC}"
+        echo -e "${GREEN}You are running version $CURRENT_VERSION, which is the latest version of the script.${NC}"
     fi
 }
 
