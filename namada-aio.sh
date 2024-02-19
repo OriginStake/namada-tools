@@ -175,6 +175,7 @@ while true
 do
   clear
   echo -e "\e[6;1mWelcome to OriginStake - Namada AIO Install Script${NC}\n"
+  echo -e "\e[6;1mVersion: $CURRENT_VERSION${NC}\n"
   echo -e "\n"
   echo -e "${BOLD}Here are your current settings:${NC}"
   echo -e "${BOLD}ChainID:${NC} ${GREEN}$NEWCHAINID${NC}"
