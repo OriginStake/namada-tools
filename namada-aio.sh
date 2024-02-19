@@ -15,7 +15,7 @@ function check_for_updates {
     latest_version=$(curl -s https://raw.githubusercontent.com/tungdh1/namada-tools/main/version.txt | tr -d '\r')
     
     # Check if the latest version is greater than the current version
-    if (( $(echo "$latest_version > $CURRENT_VERSION" | bc -l) )); then
+    if [[ $(echo "$latest_version $CURRENT_VERSION" | awk '{if (\$1 > \$2) print 1; else print 0}') -eq 1 ]]; then
         echo -e "${RED}A new version of the script is available. Would you like to update? (Yes/No)${NC}"
         read update_confirmation
         if [[ "${update_confirmation,,}" == "yes" ]]; then
