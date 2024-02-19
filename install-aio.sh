@@ -8,3 +8,5 @@ chmod +x namadaio
 
 # Move the namadaio file to a common directory
 mv namadaio /usr/local/bin/
+
+echo "Finish install Namada All In One! Please run 'namadaio' to start using NamadaAIO Script."
