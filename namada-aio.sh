@@ -8,7 +8,7 @@ NC='\033[0m' # No Color
 
 NEWCHAINID=shielded-expedition.88f17d1d14
 SCRIPT_NAME="namada-aio.sh"
-CURRENT_VERSION="1.1.96"
+CURRENT_VERSION="1.1.97"
 
 function check_for_updates {
     # Get the latest version number from the 'version.txt' file in your GitHub repository
@@ -194,9 +194,9 @@ do
   echo "Please choose an option:"
   echo "1/ Install Namada - All in One Script"
   echo "2/ Start/Stop/Check/Remove Namada Service"
-  echo "3/ Namada Tool (Under Development)"
-  echo "4/ Security Namada (Under Development)"
-  echo "5/ Manage Script"
+  echo "3/ Namada Tool (UD)"
+  echo "4/ Security Namada node/validator (UD)"
+  echo "5/ Manage Script AIO"
   echo "6/ Exit"
   echo -n "Enter your choice [1-6]: "
 
