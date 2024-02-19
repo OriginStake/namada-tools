@@ -8,7 +8,7 @@ NC='\033[0m' # No Color
 
 NEWCHAINID=shielded-expedition.88f17d1d14
 SCRIPT_NAME="namada-aio.sh"
-CURRENT_VERSION="1.1.1"
+CURRENT_VERSION="1.1.2"
 
 function check_for_updates {
     # Get the latest version number from the 'version.txt' file in your GitHub repository
@@ -220,6 +220,19 @@ do
        else
            echo "jq is already installed."
        fi
+
+        # Check if bc is installed
+       if ! command -v bc &> /dev/null
+       then
+            echo "bc is not installed. Installing..."
+            case $OPERATING_SYSTEM in
+                "linux") sudo apt-get install -y bc;;
+            esac
+            echo "bc has been installed successfully."
+        else
+            echo "bc is already installed."
+        fi
+
        echo "Checking Namada..."
        if ! command -v namada &> /dev/null && ! command -v namadaw &> /dev/null && ! command -v namadan &> /dev/null && ! command -v namadac &> /dev/null
        then
