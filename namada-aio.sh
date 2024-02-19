@@ -8,7 +8,7 @@ NC='\033[0m' # No Color
 
 NEWCHAINID=shielded-expedition.88f17d1d14
 SCRIPT_NAME="namada-aio.sh"
-CURRENT_VERSION="1.1.95"
+CURRENT_VERSION="1.1.96"
 
 function check_for_updates {
     # Get the latest version number from the 'version.txt' file in your GitHub repository
@@ -25,7 +25,7 @@ function check_for_updates {
             chmod +x $SCRIPT_NAME
             echo -e "${GREEN}The script has been updated to version $latest_version.${NC}"
             NEW_SCRIPT_NAME="namadaio"
-            sudo cp $SCRIPT_NAME /usr/local/bin/$NEW_SCRIPT_NAME
+            sudo mv $SCRIPT_NAME /usr/local/bin/$NEW_SCRIPT_NAME
             sudo chmod +x /usr/local/bin/$NEW_SCRIPT_NAME
             echo "The script has been copied to /usr/local/bin/$NEW_SCRIPT_NAME."
             exit 0
