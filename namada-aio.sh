@@ -8,7 +8,7 @@ NC='\033[0m' # No Color
 
 NEWCHAINID=shielded-expedition.88f17d1d14
 SCRIPT_NAME="namada-aio.sh"
-CURRENT_VERSION="1.1.94"
+CURRENT_VERSION="1.1.95"
 
 function check_for_updates {
     # Get the latest version number from the 'version.txt' file in your GitHub repository
@@ -174,7 +174,7 @@ function security_namada_menu {
 while true
 do
   clear
-  echo -e "\e[6;1mWelcome to OriginStake - Namada AIO Install Script${NC}\n"
+  echo -e "\e[6;1mWelcome to OriginStake - Namada AIO Install Script${NC}"
   echo -e "\e[6;1mVersion: $CURRENT_VERSION${NC}\n"
   echo -e "\n"
   echo -e "${BOLD}Here are your current settings:${NC}"
