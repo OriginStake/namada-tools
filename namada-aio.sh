@@ -8,7 +8,7 @@ NC='\033[0m' # No Color
 
 NEWCHAINID=shielded-expedition.88f17d1d14
 SCRIPT_NAME="namada-aio.sh"
-CURRENT_VERSION="1.0"
+CURRENT_VERSION="1.1"
 
 function check_for_updates {
     # Get the latest version number from the 'version.txt' file in your GitHub repository
@@ -126,6 +126,46 @@ function namada_service_menu {
     done
 }
 
+function namada_tool_menu {
+    echo "This feature is currently under development."
+    while true
+    do
+        echo "Choose an option:"
+        echo "1/ Open RPC to Public"
+        echo "2/ Turn on Prometheus"
+        echo "3/ Update new Peers"
+        echo "4/ Go back to the previous menu"
+        echo -n "Enter your choice [1-4]: "
+        read tool_option
+        case $tool_option in
+            1) echo "This feature is currently under development.";;
+            2) echo "This feature is currently under development.";;
+            3) echo "This feature is currently under development.";;
+            4) return;;
+            *) echo "Invalid choice. Please try again.";;
+        esac
+    done
+}
+
+function security_namada_menu {
+    echo "This feature is currently under development."
+    while true
+    do
+        echo "Choose an option:"
+        echo "1/ Turn On/Off Port 26657"
+        echo "2/ Limit Access RPC"
+        echo "3/ Go back to the previous menu"
+        echo -n "Enter your choice [1-3]: "
+        read security_option
+        case $security_option in
+            1) echo "This feature is currently under development.";;
+            2) echo "This feature is currently under development.";;
+            3) return;;
+            *) echo "Invalid choice. Please try again.";;
+        esac
+    done
+}
+
 while true
 do
   clear
@@ -146,9 +186,11 @@ do
   echo "Please choose an option:"
   echo "1/ Install Namada - All in One Script"
   echo "2/ Start/Stop/Check/Remove Namada Service"
-  echo "3/ Manage Script"
-  echo "4/ Exit"
-  echo -n "Enter your choice [1-4]: "
+  echo "3/ Namada Tool (Under Development)"
+  echo "4/ Security Namada (Under Development)"
+  echo "5/ Manage Script"
+  echo "6/ Exit"
+  echo -n "Enter your choice [1-6]: "
 
   read option
   case $option in
@@ -266,9 +308,13 @@ EOF
 
     2) namada_service_menu;;
 
-    3) manage_script;;
+    3) namada_tool_menu;;
 
-    4) echo "You have chosen 'Exit'."
+    4) security_namada_menu;;
+
+    5) manage_script;;
+
+    6) echo "You have chosen 'Exit'."
        exit 0;;
     *) echo "Invalid choice. Please try again."
        sleep 3;;
