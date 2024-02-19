@@ -12,7 +12,7 @@ CURRENT_VERSION="1.1.7"
 
 function check_for_updates {
     # Get the latest version number from the 'version.txt' file in your GitHub repository
-    latest_version=$(curl -s https://raw.githubusercontent.com/tungdh1/namada-tools/main/version.txt)
+    latest_version=$(curl -s https://raw.githubusercontent.com/tungdh1/namada-tools/main/version.txt | tr -d '\r')
     
     # Check if the latest version is greater than the current version
     if (( $(echo "$latest_version > $CURRENT_VERSION" | bc -l 2>/dev/null) )); then
