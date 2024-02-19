@@ -18,7 +18,7 @@ NC='\033[0m' # No Color
 
 NEWCHAINID=shielded-expedition.88f17d1d14
 SCRIPT_NAME="namada-aio.sh"
-CURRENT_VERSION="1.1.5"
+CURRENT_VERSION="1.1.6"
 
 function check_for_updates {
     # Get the latest version number from the 'version.txt' file in your GitHub repository
