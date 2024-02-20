@@ -8,7 +8,7 @@ NC='\033[0m' # No Color
 
 NEWCHAINID=shielded-expedition.88f17d1d14
 SCRIPT_NAME="namada-aio.sh"
-CURRENT_VERSION="1.1.97"
+CURRENT_VERSION="1.2"
 
 function check_for_updates {
     # Get the latest version number from the 'version.txt' file in your GitHub repository
@@ -16,7 +16,6 @@ function check_for_updates {
     
     # Check if the latest version is greater than the current version
     if [[ "$latest_version" > "$CURRENT_VERSION" ]]; then
-
         echo -e "${RED}A new version of the script is available. Would you like to update? (Yes/No)${NC}"
         read update_confirmation
         if [[ "${update_confirmation,,}" == "yes" ]]; then
@@ -171,134 +170,127 @@ function security_namada_menu {
     done
 }
 
-while true
-do
-  clear
-  echo -e "\e[6;1mWelcome to OriginStake - Namada AIO Install Script${NC}"
-  echo -e "\e[6;1mVersion: $CURRENT_VERSION${NC}\n"
-  echo -e "\n"
-  echo -e "${BOLD}Here are your current settings:${NC}"
-  echo -e "${BOLD}ChainID:${NC} ${GREEN}$NEWCHAINID${NC}"
-  if command -v namada &> /dev/null; then
-    namada_version=$(namada --version | cut -d ' ' -f 2)
-    echo -e "${BOLD}Namada version:${NC} ${GREEN}$namada_version${NC}"
-  else
-    echo -e "${BOLD}Namada:${NC} ${RED}Not installed${NC}"
-  fi
-  if command -v cometbft &> /dev/null; then
-    echo -e "${BOLD}CometBFT version:${NC} ${GREEN}$(cometbft version)${NC}"
-  else
-    echo -e "${BOLD}CometBFT:${NC} ${RED}Not installed${NC}"
-  fi
-  echo -e "\n"
-  echo "Please choose an option:"
-  echo "1/ Install Namada - All in One Script"
-  echo "2/ Start/Stop/Check/Remove Namada Service"
-  echo "3/ Namada Tool (UD)"
-  echo "4/ Security Namada node/validator (UD)"
-  echo "5/ Manage Script AIO"
-  echo "6/ Exit"
-  echo -n "Enter your choice [1-6]: "
+function print_header {
+    echo -e "\e[6;1mWelcome to OriginStake - Namada AIO Install Script${NC}"
+    echo -e "\e[6;1mVersion: $CURRENT_VERSION${NC}\n"
+}
 
-  read option
-  case $option in
-    1) echo "You have chosen 'Install Namada - All in One Script'."
-       echo "Please choose your operating system:"
-       echo "1/ Linux"
-       echo -n "Enter your choice [1]: "
-       read os_option
-       case $os_option in
-           1) OPERATING_SYSTEM="linux"; OPERATING_SYSTEM_CAP="Linux";;
-           *) echo "Invalid choice. Please try again."
-              sleep 3
-              continue;;
-       esac
-       ARCHITECTURE="x86_64"
+function print_settings {
+    echo -e "${BOLD}Here are your current settings:${NC}"
+    echo -e "${BOLD}ChainID:${NC} ${GREEN}$NEWCHAINID${NC}"
+    if command -v namada &> /dev/null; then
+        namada_version=$(namada --version | cut -d ' ' -f 2)
+        echo -e "${BOLD}Namada version:${NC} ${GREEN}$namada_version${NC}"
+    else
+        echo -e "${BOLD}Namada:${NC} ${RED}Not installed${NC}"
+    fi
+    if command -v cometbft &> /dev/null; then
+        echo -e "${BOLD}CometBFT version:${NC} ${GREEN}$(cometbft version)${NC}"
+    else
+        echo -e "${BOLD}CometBFT:${NC} ${RED}Not installed${NC}"
+    fi
+    echo -e "\n"
+}
 
-       echo "Updating and upgrading the system..."
-       sudo apt update -y && sudo apt upgrade -y
+function install_namada {
+    echo "You have chosen 'Install Namada - All in One Script'."
+    echo "Please choose your operating system:"
+    echo "1/ Linux"
+    echo -n "Enter your choice [1]: "
+    read os_option
+    case $os_option in
+        1) OPERATING_SYSTEM="linux"; OPERATING_SYSTEM_CAP="Linux";;
+        *) echo "Invalid choice. Please try again."
+            sleep 3
+            return;;
+    esac
+    ARCHITECTURE="x86_64"
 
-       if ! command -v jq &> /dev/null
-       then
-           echo "jq is not installed. Installing..."
-           case $OPERATING_SYSTEM in
-               "linux") sudo apt-get install -y jq;;
-           esac
-           echo "jq has been installed successfully."
-       else
-           echo "jq is already installed."
-       fi
+    echo "Updating and upgrading the system..."
+    sudo apt update -y && sudo apt upgrade -y
 
-        # Check if bc is installed
-       if ! command -v bc &> /dev/null
-       then
-            echo "bc is not installed. Installing..."
-            case $OPERATING_SYSTEM in
-                "linux") sudo apt-get install -y bc;;
-            esac
-            echo "bc has been installed successfully."
-        else
-            echo "bc is already installed."
+    if ! command -v jq &> /dev/null
+    then
+        echo "jq is not installed. Installing..."
+        case $OPERATING_SYSTEM in
+            "linux") sudo apt-get install -y jq;;
+        esac
+        echo "jq has been installed successfully."
+    else
+        echo "jq is already installed."
+    fi
+
+    # Check if bc is installed
+    if ! command -v bc &> /dev/null
+    then
+        echo "bc is not installed. Installing..."
+        case $OPERATING_SYSTEM in
+            "linux") sudo apt-get install -y bc;;
+        esac
+        echo "bc has been installed successfully."
+    else
+        echo "bc is already installed."
+    fi
+
+    echo "Checking Namada..."
+    if ! command -v namada &> /dev/null && ! command -v namadaw &> /dev/null && ! command -v namadan &> /dev/null && ! command -v namadac &> /dev/null
+    then
+        echo "Namada is not installed. Installing..."
+        latest_release_url=$(curl -s "https://api.github.com/repos/anoma/namada/releases/latest" | jq -r ".assets[] | select(.name | test(\"$OPERATING_SYSTEM_CAP-$ARCHITECTURE\")) | .browser_download_url")
+        if [ -z "$latest_release_url" ]; then
+            echo "Unable to determine download URL. Please check again."
+            return
         fi
+        curl -L $latest_release_url -o namada.tar.gz
+        if [ $? -ne 0 ]; then
+            echo "Unable to download the file. Please check again."
+            return
+        fi
+        tar -xvf namada.tar.gz
+        if [ $? -ne 0 ]; then
+            echo "Unable to extract the file. Please check again."
+            return
+        fi
+        dirname=$(tar -tzf namada.tar.gz | head -1 | cut -f1 -d"/")
+        sudo mv $dirname/* /usr/local/bin/
+        rm -r $dirname namada.tar.gz
+        namada_version=$(namada --version | cut -d ' ' -f 2)
+        echo "You have successfully installed Namada Binary, the current version is $namada_version"
+    else
+        echo "Namada is already installed."
+        namada_version=$(namada --version | cut -d ' ' -f 2)
+        echo "The current version of Namada is $namada_version"
+    fi
 
-       echo "Checking Namada..."
-       if ! command -v namada &> /dev/null && ! command -v namadaw &> /dev/null && ! command -v namadan &> /dev/null && ! command -v namadac &> /dev/null
-       then
-           echo "Namada is not installed. Installing..."
-           latest_release_url=$(curl -s "https://api.github.com/repos/anoma/namada/releases/latest" | jq -r ".assets[] | select(.name | test(\"$OPERATING_SYSTEM_CAP-$ARCHITECTURE\")) | .browser_download_url")
-           if [ -z "$latest_release_url" ]; then
-               echo "Unable to determine download URL. Please check again."
-               exit 1
-           fi
-           curl -L $latest_release_url -o namada.tar.gz
-           if [ $? -ne 0 ]; then
-               echo "Unable to download the file. Please check again."
-               exit 1
-           fi
-           tar -xvf namada.tar.gz
-           if [ $? -ne 0 ]; then
-               echo "Unable to extract the file. Please check again."
-               exit 1
-           fi
-           dirname=$(tar -tzf namada.tar.gz | head -1 | cut -f1 -d"/")
-           sudo mv $dirname/* /usr/local/bin/
-           rm -r $dirname namada.tar.gz
-           namada_version=$(namada --version | cut -d ' ' -f 2)
-           echo "You have successfully installed Namada Binary, the current version is $namada_version"
-       else
-           echo "Namada is already installed."
-           namada_version=$(namada --version | cut -d ' ' -f 2)
-           echo "The current version of Namada is $namada_version"
-       fi
-       echo "Checking CometBFT..."
-       if ! command -v cometbft &> /dev/null
-       then
-           echo "CometBFT is not installed. Installing..."
-           cometbft_release_info=$(curl -s "https://api.github.com/repos/cometbft/cometbft/releases/tags/v0.37.2")
-           machine=$(uname -m)
-           if [ "$machine" == "x86_64" ]; then
-             machine="amd64"
-           fi
-           cometbft_download_url=$(echo $cometbft_release_info | jq -r ".assets[] | select(.name | test(\"$OPERATING_SYSTEM\")) | select(.name | test(\"$machine\")) | .browser_download_url")
-           if [ "$cometbft_download_url" == "null" ]; then
-             echo "There are no binaries to download from this tag."
-             exit 1
-           fi
-           wget "$cometbft_download_url"
-           tar -xzvf cometbft*.tar.gz
-           sudo cp ./cometbft /usr/local/bin/
-           rm cometbft*.tar.gz
-           rm CHANGELOG.md LICENSE README.md SECURITY.md UPGRADING.md cometbft
-           cometbft_version=$(cometbft version)
-           echo "You have successfully installed cometbft Binary, the current version is $cometbft_version"
-       else
-           echo "CometBFT is already installed."
-           cometbft_version=$(cometbft version)
-           echo "The current version of CometBFT is $cometbft_version"
-       fi
+    echo "Checking CometBFT..."
+    if ! command -v cometbft &> /dev/null
+    then
+        echo "CometBFT is not installed. Installing..."
+        cometbft_release_info=$(curl -s "https://api.github.com/repos/cometbft/cometbft/releases/tags/v0.37.2")
+        machine=$(uname -m)
+        if [ "$machine" == "x86_64" ]; then
+            machine="amd64"
+        fi
+        cometbft_download_url=$(echo $cometbft_release_info | jq -r ".assets[] | select(.name | test(\"$OPERATING_SYSTEM\")) | select(.name | test(\"$machine\")) | .browser_download_url")
+        if [ "$cometbft_download_url" == "null" ]; then
+            echo "There are no binaries to download from this tag."
+            return
+        fi
+        wget "$cometbft_download_url"
+        tar -xzvf cometbft*.tar.gz
+        sudo cp ./cometbft /usr/local/bin/
+        rm cometbft*.tar.gz
+        rm CHANGELOG.md LICENSE README.md SECURITY.md UPGRADING.md cometbft
+        cometbft_version=$(cometbft version)
+        echo "You have successfully installed cometbft Binary, the current version is $cometbft_version"
+    else
+        echo "CometBFT is already installed."
+        cometbft_version=$(cometbft version)
+        echo "The current version of CometBFT is $cometbft_version"
+    fi
 
-       echo "Creating namadad service file..."
-       sudo bash -c "cat > /etc/systemd/system/namadad.service" << EOF
+    echo "Creating namadad service file..."
+    sudo bash -c "cat > /etc/systemd/system/namadad.service" << EOF
 [Unit]
 Description=namada
 After=network-online.target
@@ -316,28 +308,47 @@ LimitNOFILE=65535
 [Install]
 WantedBy=multi-user.target
 EOF
-       sudo systemctl daemon-reload
-       sudo systemctl enable namadad
-       echo "The namadad service file has been created and activated."
+    sudo systemctl daemon-reload
+    sudo systemctl enable namadad
+    echo "The namadad service file has been created and activated."
 
-       clear
-       echo -e "${BOLD}You have successfully completed the installation of the OriginStake - Namada All in One script. Here is the current information:${NC}"
-       echo -e "${BOLD}- Namada Version:${NC} ${GREEN}$namada_version${NC}"
-       echo -e "${BOLD}- Cometbft Version:${NC} ${GREEN}$cometbft_version${NC}"
-       echo "- A namadad.service file has been created. You can return to the main menu and start Namada."
-       sleep 3;;
+    clear
+    echo -e "${BOLD}You have successfully completed the installation of the OriginStake - Namada All in One script. Here is the current information:${NC}"
+    echo -e "${BOLD}- Namada Version:${NC} ${GREEN}$namada_version${NC}"
+    echo -e "${BOLD}- Cometbft Version:${NC} ${GREEN}$cometbft_version${NC}"
+    echo "- A namadad.service file has been created. You can return to the main menu and start Namada."
+    sleep 3
+}
 
-    2) namada_service_menu;;
+function main_menu {
+    while true
+    do
+        clear
+        print_header
+        print_settings
 
-    3) namada_tool_menu;;
+        echo "Please choose an option:"
+        echo "1/ Install Namada - All in One Script"
+        echo "2/ Start/Stop/Check/Remove Namada Service"
+        echo "3/ Namada Tool (UD)"
+        echo "4/ Security Namada node/validator (UD)"
+        echo "5/ Manage Script AIO"
+        echo "6/ Exit"
+        echo -n "Enter your choice [1-6]: "
 
-    4) security_namada_menu;;
+        read option
+        case $option in
+            1) install_namada;;
+            2) namada_service_menu;;
+            3) namada_tool_menu;;
+            4) security_namada_menu;;
+            5) manage_script;;
+            6) echo "You have chosen 'Exit'."
+               exit 0;;
+            *) echo "Invalid choice. Please try again."
+               sleep 3;;
+        esac
+    done
+}
 
-    5) manage_script;;
-
-    6) echo "You have chosen 'Exit'."
-       exit 0;;
-    *) echo "Invalid choice. Please try again."
-       sleep 3;;
-  esac
-done
+main_menu
