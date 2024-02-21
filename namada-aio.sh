@@ -8,7 +8,7 @@ NC='\033[0m' # No Color
 
 NEWCHAINID=shielded-expedition.88f17d1d14
 SCRIPT_NAME="namada-aio.sh"
-CURRENT_VERSION="1.3.2"
+CURRENT_VERSION="1.3.2.1"
 
 function check_for_updates {
     # Get the latest version number from the 'version.txt' file in your GitHub repository
@@ -245,7 +245,7 @@ function install_namada {
     if ! command -v namada &> /dev/null && ! command -v namadaw &> /dev/null && ! command -v namadan &> /dev/null && ! command -v namadac &> /dev/null
     then
         echo "Namada is not installed. Installing..."
-        latest_release_url=$(curl -s https://api.github.com/repos/anoma/namada/releases/latest | tr -d '\r')
+        latest_release_url=$(curl -s "https://api.github.com/repos/anoma/namada/releases/latest" | jq -r ".assets[] | select(.name | test(\"$OPERATING_SYSTEM_CAP-$ARCHITECTURE\")) | .browser_download_url")
         if [ -z "$latest_release_url" ]; then
             echo "Unable to determine download URL. Please check again."
             return
