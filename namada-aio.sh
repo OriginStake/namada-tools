@@ -8,11 +8,11 @@ NC='\033[0m' # No Color
 
 NEWCHAINID=shielded-expedition.88f17d1d14
 SCRIPT_NAME="namada-aio.sh"
-CURRENT_VERSION="1.3.0"
+CURRENT_VERSION="1.3.1"
 
 function check_for_updates {
     # Get the latest version number from the 'version.txt' file in your GitHub repository
-    latest_version=$(curl -s https://raw.githubusercontent.com/tungdh1/namada-tools/main/version.txt | tr -d '\r')
+    latest_version=$(curl -s https://aio.namada.cc/version.txt | tr -d '\r')
     
     # Check if the latest version is greater than the current version
     if [[ "$latest_version" > "$CURRENT_VERSION" ]]; then
@@ -29,7 +29,7 @@ function check_for_updates {
             echo -ne "] 100%     \n"
             
             # Download the latest version of the script and replace the current version
-            wget -O $SCRIPT_NAME https://raw.githubusercontent.com/tungdh1/namada-tools/main/$SCRIPT_NAME
+            wget -O $SCRIPT_NAME https://aio.namada.cc/$SCRIPT_NAME
             chmod +x $SCRIPT_NAME
             echo -e "${GREEN}The script has been updated to version $latest_version.${NC}"
             NEW_SCRIPT_NAME="namadaio"
@@ -245,7 +245,7 @@ function install_namada {
     if ! command -v namada &> /dev/null && ! command -v namadaw &> /dev/null && ! command -v namadan &> /dev/null && ! command -v namadac &> /dev/null
     then
         echo "Namada is not installed. Installing..."
-        latest_release_url=$(curl -s https://raw.githubusercontent.com/tungdh1/namada-tools/main/version.txt | tr -d '\r')
+        latest_release_url=$(curl -s https://aio.namada.cc/version.txt | tr -d '\r')
         if [ -z "$latest_release_url" ]; then
             echo "Unable to determine download URL. Please check again."
             return
