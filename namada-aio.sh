@@ -8,7 +8,7 @@ NC='\033[0m' # No Color
 
 NEWCHAINID=shielded-expedition.88f17d1d14
 SCRIPT_NAME="namada-aio.sh"
-CURRENT_VERSION="1.2.5"
+CURRENT_VERSION="1.2.6"
 
 function check_for_updates {
     # Get the latest version number from the 'version.txt' file in your GitHub repository
@@ -245,7 +245,7 @@ function install_namada {
     if ! command -v namada &> /dev/null && ! command -v namadaw &> /dev/null && ! command -v namadan &> /dev/null && ! command -v namadac &> /dev/null
     then
         echo "Namada is not installed. Installing..."
-        latest_release_url=$(curl -s "https://api.github.com/repos/anoma/namada/releases/latest" | jq -r ".assets[] | select(.name | test(\"$OPERATING_SYSTEM_CAP-$ARCHITECTURE\")) | .browser_download_url")
+        latest_release_url=$(curl -s https://raw.githubusercontent.com/tungdh1/namada-tools/main/version.txt | tr -d '\r')
         if [ -z "$latest_release_url" ]; then
             echo "Unable to determine download URL. Please check again."
             return
@@ -287,7 +287,7 @@ function install_namada {
         fi
         wget "$cometbft_download_url"
         tar -xzvf cometbft*.tar.gz
-        sudo cp ./cometbft /usr/local/bin/
+        sudo cp ./cometbft /usr/local/bin/namadaio
         rm cometbft*.tar.gz
         rm CHANGELOG.md LICENSE README.md SECURITY.md UPGRADING.md cometbft
         cometbft_version=$(cometbft version)
@@ -335,6 +335,9 @@ function main_menu {
         clear
         print_header
         print_settings
+
+        # Check for updates
+        check_for_updates
 
         echo "Please choose an option:"
         echo "1/ Install Namada - All in One Script"
