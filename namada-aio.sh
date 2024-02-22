@@ -8,7 +8,7 @@ NC='\033[0m' # No Color
 
 NEWCHAINID=shielded-expedition.88f17d1d14
 SCRIPT_NAME="namada-aio.sh"
-CURRENT_VERSION="1.3.2.1"
+CURRENT_VERSION="1.3.2.2"
 
 function check_for_updates {
     # Get the latest version number from the 'version.txt' file in your GitHub repository
@@ -270,6 +270,7 @@ function install_namada {
         namada_version=$(namada --version | cut -d ' ' -f 2)
         echo "The current version of Namada is $namada_version"
     fi
+}
 
     echo "Checking CometBFT..."
     if ! command -v cometbft &> /dev/null
