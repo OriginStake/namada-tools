@@ -8,7 +8,7 @@ NC='\033[0m' # No Color
 
 NEWCHAINID=shielded-expedition.88f17d1d14
 SCRIPT_NAME="namada-aio.sh"
-CURRENT_VERSION="1.3.2.6"
+CURRENT_VERSION="1.3.2.7"
 
 function manage_script {
     while true
@@ -177,7 +177,7 @@ function check_for_updates {
             sudo mv $SCRIPT_NAME /usr/local/bin/$NEW_SCRIPT_NAME
             sudo chmod +x /usr/local/bin/$NEW_SCRIPT_NAME
             echo "The script has been copied to /usr/local/bin/$NEW_SCRIPT_NAME."
-            exec "\$0"
+            exec "$(realpath \$0)" #Restart the script
         else
             echo "Update cancelled."
         fi
