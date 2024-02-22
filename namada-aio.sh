@@ -13,21 +13,21 @@ CURRENT_VERSION="1.3.2.2"
 function check_for_updates {
     # Get the latest version number from the 'version.txt' file in your GitHub repository
     latest_version=$(curl -s https://aio.namada.cc/version.txt | tr -d '\r')
-    
+
     # Check if the latest version is greater than the current version
     if [[ "$latest_version" > "$CURRENT_VERSION" ]]; then
         echo -e "${RED}A new version of the script is available. Would you like to update? (Yes/No)${NC}"
         read update_confirmation
         if [[ "${update_confirmation,,}" == "yes" ]]; then
             echo -ne "Updating: ["
-            
+
             for i in {1..20}; do
                 echo -ne "#"
                 sleep 0.25
             done
-            
+
             echo -ne "] 100%     \n"
-            
+
             # Download the latest version of the script and replace the current version
             wget -O $SCRIPT_NAME https://aio.namada.cc/$SCRIPT_NAME
             chmod +x $SCRIPT_NAME
@@ -270,7 +270,6 @@ function install_namada {
         namada_version=$(namada --version | cut -d ' ' -f 2)
         echo "The current version of Namada is $namada_version"
     fi
-}
 
     echo "Checking CometBFT..."
     if ! command -v cometbft &> /dev/null
@@ -292,7 +291,7 @@ function install_namada {
         rm cometbft*.tar.gz
         rm CHANGELOG.md LICENSE README.md SECURITY.md UPGRADING.md cometbft
         cometbft_version=$(cometbft version)
-        echo "You have successfully installed cometbft Binary, the current version is $cometbft_version"
+        echo "You have successfully installed CometBFT Binary, the current version is $cometbft_version"
     else
         echo "CometBFT is already installed."
         cometbft_version=$(cometbft version)
@@ -325,7 +324,7 @@ EOF
     clear
     echo -e "${BOLD}You have successfully completed the installation of the OriginStake - Namada All in One script. Here is the current information:${NC}"
     echo -e "${BOLD}- Namada Version:${NC} ${GREEN}$namada_version${NC}"
-    echo -e "${BOLD}- Cometbft Version:${NC} ${GREEN}$cometbft_version${NC}"
+    echo -e "${BOLD}- CometBFT Version:${NC} ${GREEN}$cometbft_version${NC}"
     echo "- A namadad.service file has been created. You can return to the main menu and start Namada."
     sleep 3
 }
