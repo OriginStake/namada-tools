@@ -8,42 +8,7 @@ NC='\033[0m' # No Color
 
 NEWCHAINID=shielded-expedition.88f17d1d14
 SCRIPT_NAME="namada-aio.sh"
-CURRENT_VERSION="1.3.2.3"
-
-function check_for_updates {
-    # Get the latest version number from the 'version.txt' file in your GitHub repository
-    latest_version=$(curl -s https://aio.namada.cc/version.txt | tr -d '\r')
-
-    # Check if the latest version is greater than the current version
-    if [[ "$latest_version" > "$CURRENT_VERSION" ]]; then
-        echo -e "${RED}A new version of the script is available. Would you like to update? (Yes/No)${NC}"
-        read update_confirmation
-        if [[ "${update_confirmation,,}" == "yes" ]]; then
-            echo -ne "Updating: ["
-
-            for i in {1..20}; do
-                echo -ne "#"
-                sleep 0.25
-            done
-
-            echo -ne "] 100%     \n"
-
-            # Download the latest version of the script and replace the current version
-            wget -O $SCRIPT_NAME https://aio.namada.cc/$SCRIPT_NAME
-            chmod +x $SCRIPT_NAME
-            echo -e "${GREEN}The script has been updated to version $latest_version.${NC}"
-            NEW_SCRIPT_NAME="namadaio"
-            sudo mv $SCRIPT_NAME /usr/local/bin/$NEW_SCRIPT_NAME
-            sudo chmod +x /usr/local/bin/$NEW_SCRIPT_NAME
-            echo "The script has been copied to /usr/local/bin/$NEW_SCRIPT_NAME."
-            exit 0
-        else
-            echo "Update cancelled."
-        fi
-    else
-        echo -e "${GREEN}You are running version $CURRENT_VERSION, which is the latest version of the script.${NC}"
-    fi
-}
+CURRENT_VERSION="1.3.2.4"
 
 function manage_script {
     while true
@@ -181,7 +146,45 @@ function security_namada_menu {
 
 function print_header {
     echo -e "\e[6;1mWelcome to OriginStake - Namada AIO Install Script${NC}"
-    echo -e "\e[6;1mVersion: $CURRENT_VERSION${NC}\n"
+
+    # Check for updates
+    check_for_updates
+}
+
+function check_for_updates {
+    # Get the latest version number from the 'version.txt' file in your GitHub repository
+    latest_version=$(curl -s https://aio.namada.cc/version.txt | tr -d '\r')
+
+    # Check if the latest version is greater than the current version
+    if [[ "$latest_version" > "$CURRENT_VERSION" ]]; then
+        echo -e "${RED}A new version of the script is available. Would you like to update? (Yes/No)${NC}"
+        read update_confirmation
+        if [[ "${update_confirmation,,}" == "yes" ]]; then
+            echo -ne "Updating: ["
+
+            for i in {1..20}; do
+                echo -ne "#"
+                sleep 0.25
+            done
+
+            echo -ne "] 100%     \n"
+
+            # Download the latest version of the script and replace the current version
+            wget -O $SCRIPT_NAME https://aio.namada.cc/$SCRIPT_NAME
+            chmod +x $SCRIPT_NAME
+            echo -e "${GREEN}The script has been updated to version $latest_version.${NC}"
+            NEW_SCRIPT_NAME="namadaio"
+            sudo mv $SCRIPT_NAME /usr/local/bin/$NEW_SCRIPT_NAME
+            sudo chmod +x /usr/local/bin/$NEW_SCRIPT_NAME
+            echo "The script has been copied to /usr/local/bin/$NEW_SCRIPT_NAME."
+            exit 0
+        else
+            echo "Update cancelled."
+        fi
+    else
+        echo -e "${GREEN}Version $CURRENT_VERSION (latest version).${NC}"
+    fi
+    echo -e "\n"
 }
 
 function print_settings {
@@ -337,7 +340,7 @@ function main_menu {
         print_settings
 
         # Check for updates
-        check_for_updates
+        #check_for_updates
 
         echo "Please choose an option:"
         echo "1/ Install Namada - All in One Script"
