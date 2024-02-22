@@ -8,7 +8,7 @@ NC='\033[0m' # No Color
 
 NEWCHAINID=shielded-expedition.88f17d1d14
 SCRIPT_NAME="namada-aio.sh"
-CURRENT_VERSION="1.3.3"
+CURRENT_VERSION="1.3.4"
 
 function manage_script {
     while true
@@ -311,9 +311,10 @@ User=$(whoami)
 WorkingDirectory=/root/.local/share/namada
 Environment=TM_LOG_LEVEL=p2p:none,pex:error
 Environment=NAMADA_CMT_STDOUT=true
+Environment=NAMADA_LOG=info
 ExecStart=/usr/local/bin/namada node ledger run 
-StandardOutput=syslog
-StandardError=syslog
+StandardOutput=journal
+StandardError=journal
 Restart=always
 RestartSec=10
 LimitNOFILE=65535
