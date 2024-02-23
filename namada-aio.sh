@@ -8,7 +8,7 @@ NC='\033[0m' # No Color
 
 NEWCHAINID=shielded-expedition.88f17d1d14
 SCRIPT_NAME="namada-aio.sh"
-CURRENT_VERSION="1.3.4"
+CURRENT_VERSION="1.3.4.1"
 
 function manage_script {
     while true
@@ -140,6 +140,37 @@ function security_namada_menu {
             2) echo "This feature is currently under development.";;
             3) return;;
             *) echo "Invalid choice. Please try again.";;
+        esac
+    done
+}
+
+function join_namada_network_menu {
+    while true
+    do
+        echo "Choose an option:"
+        echo "1/ Join Namada as Genesis Validator"
+        echo "2/ Join Namada as Post Genesis Validator"
+        echo "3/ Join Namada as Full Node"
+        echo "4/ Go back to the previous menu"
+        echo -n "Enter your choice [1-4]: "
+        read join_option
+        case $join_option in
+            1) echo "Joining Namada as Genesis Validator..."
+               # Thực hiện các bước để tham gia Namada như Genesis Validator
+               echo "Joined Namada as Genesis Validator."
+               sleep 3;;
+            2) echo "Joining Namada as Post Genesis Validator..."
+               # Thực hiện các bước để tham gia Namada như Post Genesis Validator
+               echo "Joined Namada as Post Genesis Validator."
+               sleep 3;;
+            3) echo "Joining Namada as Full Node..."
+               # Thực hiện các bước để tham gia Namada như Full Node
+               echo "Joined Namada as Full Node."
+               sleep 3;;
+            4) echo "Going back to the previous menu..."
+               return;;
+            *) echo "Invalid choice. Please try again."
+               sleep 3;;
         esac
     done
 }
@@ -345,21 +376,23 @@ function main_menu {
 
         echo "Please choose an option:"
         echo "1/ Install Namada - All in One Script"
-        echo "2/ Start/Stop/Check/Remove Namada Service"
-        echo "3/ Namada Tool (UD)"
-        echo "4/ Security Namada node/validator (UD)"
-        echo "5/ Manage Script AIO"
-        echo "6/ Exit"
-        echo -n "Enter your choice [1-6]: "
+        echo "2/ Join Namada Network"
+        echo "3/ Start/Stop/Check/Remove Namada Service"
+        echo "4/ Namada Tool (UD)"
+        echo "5/ Security Namada node/validator (UD)"
+        echo "6/ Manage Script AIO"
+        echo "7/ Exit"
+        echo -n "Enter your choice [1-7]: "
 
         read option
         case $option in
             1) install_namada;;
-            2) namada_service_menu;;
-            3) namada_tool_menu;;
-            4) security_namada_menu;;
-            5) manage_script;;
-            6) echo "You have chosen 'Exit'."
+            2) join_namada_network_menu;;
+            3) namada_service_menu;;
+            4) namada_tool_menu;;
+            5) security_namada_menu;;
+            6) manage_script;;
+            7) echo "You have chosen 'Exit'."
                exit 0;;
             *) echo "Invalid choice. Please try again."
                sleep 3;;
