@@ -10,7 +10,7 @@ NC='\033[0m' # No Color
 
 NEWCHAINID=shielded-expedition.88f17d1d14
 SCRIPT_NAME="namada-aio.sh"
-CURRENT_VERSION="1.3.4.4"
+CURRENT_VERSION="1.3.4.5"
 
 function manage_script {
     while true
@@ -149,10 +149,11 @@ function security_namada_menu {
 function join_namada_network_menu {
     while true
     do
-        echo "To join the Namada Network, please choose one of the following options:"
-        echo "- ${YELLOW}Genesis Validator${NC}: This role is for validators included in the Genesis file and can join/rejoin if listed in the Genesis list. If you are not selected in the Genesis list, this option will not be effective."
-        echo "- ${GREEN}Post Genesis Validator${NC}: This role is for validators/nodes that can join after the Genesis time starts (from Block 1 onwards). You can join Namada as a Validator at any time with this option."
-        echo "- ${BLUE}Full Node${NC}: If you only need to become a data node to serve queries from the Namada ledger or provide RPC/Indexer endpoints for DApps, this is the appropriate choice"
+        echo -e "\n"
+        echo -e "To join the Namada Network, please choose one of the following options:"
+        echo -e "- ${YELLOW}Genesis Validator${NC}: This role is for validators included in the Genesis file and can join/rejoin if listed in the Genesis list. If you are not selected in the Genesis list, this option will not be effective."
+        echo -e "- ${GREEN}Post Genesis Validator${NC}: This role is for validators/nodes that can join after the Genesis time starts (from Block 1 onwards). You can join Namada as a Validator at any time with this option."
+        echo -e "- ${BLUE}Full Node${NC}: If you only need to become a data node to serve queries from the Namada ledger or provide RPC/Indexer endpoints for DApps, this is the appropriate choice"
         echo -e "\n"
         echo "Choose an option:"
         echo -e "1/ Join Namada as ${YELLOW}Genesis Validator${NC}"
@@ -163,15 +164,15 @@ function join_namada_network_menu {
         read join_option
         case $join_option in
             1) echo "Joining Namada as Genesis Validator..."
-               # Thực hiện các bước để tham gia Namada như Genesis Validator
+               # Doing step Genesis Validator
                echo "Joined Namada as Genesis Validator."
                sleep 3;;
             2) echo "Joining Namada as Post Genesis Validator..."
-               # Thực hiện các bước để tham gia Namada như Post Genesis Validator
+               # Doing step Post Genesis Validator
                echo "Joined Namada as Post Genesis Validator."
                sleep 3;;
             3) echo "Joining Namada as Full Node..."
-               # Thực hiện các bước để tham gia Namada như Full Node
+               # Doing step Namada như Full Node
                echo "Joined Namada as Full Node."
                sleep 3;;
             4) echo "Going back to the previous menu..."
