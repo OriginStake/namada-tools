@@ -3,12 +3,14 @@
 # Define some colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
 BOLD='\033[1m'
 NC='\033[0m' # No Color
 
 NEWCHAINID=shielded-expedition.88f17d1d14
 SCRIPT_NAME="namada-aio.sh"
-CURRENT_VERSION="1.3.4.1"
+CURRENT_VERSION="1.3.4.2"
 
 function manage_script {
     while true
@@ -148,9 +150,9 @@ function join_namada_network_menu {
     while true
     do
         echo "Choose an option:"
-        echo "1/ Join Namada as Genesis Validator"
-        echo "2/ Join Namada as Post Genesis Validator"
-        echo "3/ Join Namada as Full Node"
+        echo -e "1/ ${YELLOW}Join Namada as Genesis Validator${NC}"
+        echo -e "2/ ${GREEN}Join Namada as Post Genesis Validator${NC}"
+        echo -e "3/ ${BLUE}Join Namada as Full Node${NC}"
         echo "4/ Go back to the previous menu"
         echo -n "Enter your choice [1-4]: "
         read join_option
