@@ -10,7 +10,7 @@ NC='\033[0m' # No Color
 
 NEWCHAINID=shielded-expedition.88f17d1d14
 SCRIPT_NAME="namada-aio.sh"
-CURRENT_VERSION="1.3.4.7"
+CURRENT_VERSION="1.3.4.8"
 
 function manage_script {
     while true
@@ -149,6 +149,7 @@ function security_namada_menu {
 function join_namada_network_menu {
     while true
     do
+        clear
         echo -e "\n"
         echo -e "==============================="
         echo -e "2/ Join ${BOLD}$(tput bold)Namada Network$(tput sgr0)${RESET}"
