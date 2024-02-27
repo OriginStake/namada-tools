@@ -377,6 +377,36 @@ EOF
     sleep 3
 }
 
+function check_env_wallet_info {
+    while true
+    do
+        echo "Choose an option:"
+        echo "1/ Check ENV"
+        echo "2/ Check Wallet Info"
+        echo "3/ Go back to the previous menu"
+        echo -n "Enter your choice [1-3]: "
+        read env_wallet_option
+        case $env_wallet_option in
+            1) echo "Checking ENV..."
+               source ~/.bash_profile
+               echo "NAMADA_TAG = $NAMADA_TAG"
+               echo "CBFT_TAG = $CBFT_TAG"
+               echo "NAMADA_CHAIN_ID = $NAMADA_CHAIN_ID"
+               echo "WALLET_ADDRESS = $WALLET_ADDRESS"
+               echo "NAMADA_TAG = $NAMADA_TAG"
+               echo "BASE_DIR = $BASE_DIR"
+               echo "VALIDATOR_ALIAS = $VALIDATOR_ALIAS"
+               echo "VALIDATOR_EMAIL = $VALIDATOR_EMAIL"
+               echo "KEY_ALIAS = $KEY_ALIAS"
+               ;;
+            2) echo "This feature is currently under development.";;
+            3) return;;
+            *) echo "Invalid choice. Please try again.";;
+        esac
+    done
+}
+
+
 function main_menu {
     while true
     do
@@ -384,8 +414,7 @@ function main_menu {
         print_header
         print_settings
 
-        # Check for updates
-        #check_for_updates
+        # menuList
 
         echo "Please choose an option:"
         echo "1/ Install Namada - All in One Script"
@@ -393,9 +422,10 @@ function main_menu {
         echo "3/ Start/Stop/Check/Remove Namada Service"
         echo "4/ Namada Tool (UD)"
         echo "5/ Security Namada node/validator (UD)"
-        echo "6/ Manage Script AIO"
-        echo "7/ Exit"
-        echo -n "Enter your choice [1-7]: "
+        echo "6/ Check ENV & Wallet Info"
+        echo "7/ Manage Script AIO"
+        echo "8/ Exit"
+        echo -n "Enter your choice [1-8]: "
 
         read option
         case $option in
@@ -404,8 +434,9 @@ function main_menu {
             3) namada_service_menu;;
             4) namada_tool_menu;;
             5) security_namada_menu;;
-            6) manage_script;;
-            7) echo "You have chosen 'Exit'."
+            6) check_env_wallet_info;;
+            7) manage_script;;
+            8) echo "You have chosen 'Exit'."
                exit 0;;
             *) echo "Invalid choice. Please try again."
                sleep 3;;
