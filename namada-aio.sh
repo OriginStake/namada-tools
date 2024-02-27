@@ -10,7 +10,7 @@ NC='\033[0m' # No Color
 
 NEWCHAINID=shielded-expedition.88f17d1d14
 SCRIPT_NAME="namada-aio.sh"
-CURRENT_VERSION="1.3.6.1"
+CURRENT_VERSION="1.3.6.2"
 
 function manage_script {
     while true
@@ -383,11 +383,13 @@ function check_env_wallet_info {
         echo "Choose an option:"
         echo "1/ Check ENV"
         echo "2/ Check Wallet Info"
-        echo "3/ Go back to the previous menu"
-        echo -n "Enter your choice [1-3]: "
+        echo "3/ Update ENV Info"
+        echo "4/ Go back to the previous menu"
+        echo -n "Enter your choice [1-4]: "
         read env_wallet_option
         case $env_wallet_option in
-            1) echo "Checking ENV..."
+            1) clear
+               echo "Checking ENV..."
                source ~/.bash_profile
                echo "NAMADA_TAG = $NAMADA_TAG"
                echo "CBFT_TAG = $CBFT_TAG"
@@ -400,11 +402,23 @@ function check_env_wallet_info {
                echo "KEY_ALIAS = $KEY_ALIAS"
                ;;
             2) echo "This feature is currently under development.";;
-            3) return;;
+            3) update_env_info;;
+            4) return;;
             *) echo "Invalid choice. Please try again.";;
         esac
     done
 }
+
+function update_env_info {
+    echo "Enter new values for the ENV variables. Leave blank to keep the current value."
+    echo -n "NAMADA_TAG (current: $NAMADA_TAG): "
+    read new_namada_tag
+    if [ ! -z "$new_namada_tag" ]; then
+        sed -i "s/export NAMADA_TAG=.*/export NAMADA_TAG=$new_namada_tag/" ~/.bash_profile
+    fi
+
+}
+
 
 
 function main_menu {
