@@ -10,7 +10,7 @@ NC='\033[0m' # No Color
 
 NEWCHAINID=shielded-expedition.88f17d1d14
 SCRIPT_NAME="namada-aio.sh"
-CURRENT_VERSION="1.3.6.4"
+CURRENT_VERSION="1.3.6.5"
 
 function manage_script {
     while true
@@ -395,7 +395,7 @@ function check_env_wallet_info {
                echo "Checking ENV..."
                source ~/.bash_profile
                echo -e "NAMADA_TAG = \033[1;33m$NAMADA_TAG\033[0m"
-               echo -e "CBFT_TAG = \033[1;33m$CBFT_TAG\033[0m"
+               echo -e "CBFT = \033[1;33m$CBFT\033[0m"
                echo -e "NAMADA_CHAIN_ID = \033[1;33m$NAMADA_CHAIN_ID\033[0m"
                echo -e "WALLET_ADDRESS = \033[1;33m$WALLET_ADDRESS\033[0m"
                echo -e "BASE_DIR = \033[1;33m$BASE_DIR\033[0m"
@@ -420,10 +420,10 @@ function update_env_info {
         sed -i "s/export NAMADA_TAG=.*/export NAMADA_TAG=$new_namada_tag/" ~/.bash_profile
     fi
 
-    echo -n "CBFT_TAG (current: $CBFT_TAG): "
-    read new_cbft_tag
-    if [ ! -z "$new_cbft_tag" ]; then
-        sed -i "s/export CBFT_TAG=.*/export CBFT_TAG=$new_cbft_tag/" ~/.bash_profile
+    echo -n "CBFT== (current: $CBFT): "
+    read new_cbft
+    if [ ! -z "$new_cbft" ]; then
+        sed -i "s/export CBFT=.*/export CBFT_TAG=$new_cbft/" ~/.bash_profile
     fi
 
     echo -n "NAMADA_CHAIN_ID (current: $NAMADA_CHAIN_ID): "
