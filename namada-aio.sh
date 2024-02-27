@@ -10,7 +10,7 @@ NC='\033[0m' # No Color
 
 NEWCHAINID=shielded-expedition.88f17d1d14
 SCRIPT_NAME="namada-aio.sh"
-CURRENT_VERSION="1.3.7"
+CURRENT_VERSION="1.3.8"
 
 function manage_script {
     while true
@@ -149,17 +149,17 @@ function security_namada_menu {
 function check_node_role {
     BASE_DIR="/root/.local/share/namada"
     if [ -d "$BASE_DIR/$NAMADA_CHAIN_ID" ]; then
-        echo "Bạn đã join vào mạng lưới Namada thành công"
+        echo "You have successfully joined the ${BOLD}$(tput bold)Namada network$(tput sgr0)${RESET}"
         if [ -d "$BASE_DIR/pre-genesis" ]; then
-            echo "This node is : GENESIS VALIDATOR"
+            echo "This node is : ${YELLOW}GENESIS VALIDATOR${NC}"
         elif [ -f "$BASE_DIR/$NAMADA_CHAIN_ID/cometbft/config/priv_validator_key.json" ]; then
-            echo "This node is : POST GENESIS VALIDATOR"
+            echo "This node is : ${GREEN}POST GENESIS VALIDATOR${NC}"
         else
-            echo "This node is : FULL NODE"
+            echo "This node is : ${BLUE}FULL NODE${NC}"
         fi
     else
-        echo "Node của bạn chưa Join vào Namada Network"
-        echo "Vui lòng chọn Option bên dưới để join vào Namada"
+        echo "Your node has not joined the ${BOLD}$(tput bold)Namada Network$(tput sgr0)${RESET}"
+        echo "Please select an option below to join Namada"
     fi
 }
 
