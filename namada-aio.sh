@@ -10,7 +10,7 @@ NC='\033[0m' # No Color
 
 NEWCHAINID=shielded-expedition.88f17d1d14
 SCRIPT_NAME="namada-aio.sh"
-CURRENT_VERSION="1.3.6.6"
+CURRENT_VERSION="1.3.6.7"
 
 function manage_script {
     while true
@@ -381,8 +381,8 @@ function check_env_wallet_info {
     do
         echo "Choose an option:"
         echo "1/ Check ENV"
-        echo "2/ Check Wallet Info"
-        echo "3/ Update ENV Info"
+        echo "2/ Check Wallet info"
+        echo "3/ Update ENV info"
         echo "4/ Go back to the previous menu"
         echo -n "Enter your choice [1-4]: "
         read env_wallet_option
@@ -402,6 +402,7 @@ function check_env_wallet_info {
                echo -e "VALIDATOR_ALIAS = \033[1;33m$VALIDATOR_ALIAS\033[0m"
                echo -e "VALIDATOR_EMAIL = \033[1;33m$VALIDATOR_EMAIL\033[0m"
                echo -e "KEY_ALIAS = \033[1;33m$KEY_ALIAS\033[0m"
+               echo -e "\n"
                ;;
             2) echo "This feature is currently under development.";;
             3) update_env_info;;
@@ -415,9 +416,11 @@ function update_env_info {
     echo "Enter new values for the ENV variables. Leave blank to keep the current value."
 
     declare -A env_vars
-    env_vars=(["NAMADA_TAG"]=$NAMADA_TAG ["CBFT"]=$CBFT ["NAMADA_CHAIN_ID"]=$NAMADA_CHAIN_ID ["WALLET_ADDRESS"]=$WALLET_ADDRESS ["BASE_DIR"]=$BASE_DIR ["VALIDATOR_ALIAS"]=$VALIDATOR_ALIAS ["VALIDATOR_EMAIL"]=$VALIDATOR_EMAIL ["KEY_ALIAS"]=$KEY_ALIAS)
+    env_vars=(["NAMADA_TAG"]=$NAMADA_TAG ["CBFT"]=$CBFT ["NAMADA_CHAIN_ID"]=$NAMADA_CHAIN_ID ["BASE_DIR"]=$BASE_DIR ["WALLET_ADDRESS"]=$WALLET_ADDRESS ["KEY_ALIAS"]=$KEY_ALIAS ["VALIDATOR_ALIAS"]=$VALIDATOR_ALIAS ["VALIDATOR_EMAIL"]=$VALIDATOR_EMAIL)
 
-    for var in "${!env_vars[@]}"; do
+    declare -a order=("NAMADA_TAG" "CBFT" "NAMADA_CHAIN_ID" "BASE_DIR" "WALLET_ADDRESS" "KEY_ALIAS" "VALIDATOR_ALIAS" "VALIDATOR_EMAIL")
+
+    for var in "${order[@]}"; do
         echo -n "$var (current: ${env_vars[$var]}): "
         read new_value
         if [ ! -z "$new_value" ]; then
@@ -435,7 +438,6 @@ function update_env_info {
     source ~/.bash_profile
 }
 
-
 function main_menu {
     while true
     do
@@ -451,7 +453,7 @@ function main_menu {
         echo "3/ Start/Stop/Check/Remove Namada Service"
         echo "4/ Namada Tool (UD)"
         echo "5/ Security Namada node/validator (UD)"
-        echo "6/ Check ENV & Wallet Info"
+        echo "6/ Check ENV & Wallet info"
         echo "7/ Manage Script AIO"
         echo "8/ Exit"
         echo -n "Enter your choice [1-8]: "
