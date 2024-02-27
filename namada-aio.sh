@@ -10,7 +10,7 @@ NC='\033[0m' # No Color
 
 NEWCHAINID=shielded-expedition.88f17d1d14
 SCRIPT_NAME="namada-aio.sh"
-CURRENT_VERSION="1.3.6.3"
+CURRENT_VERSION="1.3.6.4"
 
 function manage_script {
     while true
@@ -398,7 +398,6 @@ function check_env_wallet_info {
                echo -e "CBFT_TAG = \033[1;33m$CBFT_TAG\033[0m"
                echo -e "NAMADA_CHAIN_ID = \033[1;33m$NAMADA_CHAIN_ID\033[0m"
                echo -e "WALLET_ADDRESS = \033[1;33m$WALLET_ADDRESS\033[0m"
-               echo -e "NAMADA_TAG = \033[1;33m$NAMADA_TAG\033[0m"
                echo -e "BASE_DIR = \033[1;33m$BASE_DIR\033[0m"
                echo -e "VALIDATOR_ALIAS = \033[1;33m$VALIDATOR_ALIAS\033[0m"
                echo -e "VALIDATOR_EMAIL = \033[1;33m$VALIDATOR_EMAIL\033[0m"
@@ -414,15 +413,58 @@ function check_env_wallet_info {
 
 function update_env_info {
     echo "Enter new values for the ENV variables. Leave blank to keep the current value."
+
     echo -n "NAMADA_TAG (current: $NAMADA_TAG): "
     read new_namada_tag
     if [ ! -z "$new_namada_tag" ]; then
         sed -i "s/export NAMADA_TAG=.*/export NAMADA_TAG=$new_namada_tag/" ~/.bash_profile
     fi
 
+    echo -n "CBFT_TAG (current: $CBFT_TAG): "
+    read new_cbft_tag
+    if [ ! -z "$new_cbft_tag" ]; then
+        sed -i "s/export CBFT_TAG=.*/export CBFT_TAG=$new_cbft_tag/" ~/.bash_profile
+    fi
+
+    echo -n "NAMADA_CHAIN_ID (current: $NAMADA_CHAIN_ID): "
+    read new_namada_chain_id
+    if [ ! -z "$new_namada_chain_id" ]; then
+        sed -i "s/export NAMADA_CHAIN_ID=.*/export NAMADA_CHAIN_ID=$new_namada_chain_id/" ~/.bash_profile
+    fi
+
+    echo -n "WALLET_ADDRESS (current: $WALLET_ADDRESS): "
+    read new_wallet_address
+    if [ ! -z "$new_wallet_address" ]; then
+        sed -i "s/export WALLET_ADDRESS=.*/export WALLET_ADDRESS=$new_wallet_address/" ~/.bash_profile
+    fi
+
+    echo -n "BASE_DIR (current: $BASE_DIR): "
+    read new_base_dir
+    if [ ! -z "$new_base_dir" ]; then
+        sed -i "s|export BASE_DIR=.*|export BASE_DIR=$new_base_dir|" ~/.bash_profile
+    fi
+
+    echo -n "VALIDATOR_ALIAS (current: $VALIDATOR_ALIAS): "
+    read new_validator_alias
+    if [ ! -z "$new_validator_alias" ]; then
+        sed -i "s/export VALIDATOR_ALIAS=.*/export VALIDATOR_ALIAS=$new_validator_alias/" ~/.bash_profile
+    fi
+
+    echo -n "VALIDATOR_EMAIL (current: $VALIDATOR_EMAIL): "
+    read new_validator_email
+    if [ ! -z "$new_validator_email" ]; then
+        sed -i "s/export VALIDATOR_EMAIL=.*/export VALIDATOR_EMAIL=$new_validator_email/" ~/.bash_profile
+    fi
+
+    echo -n "KEY_ALIAS (current: $KEY_ALIAS): "
+    read new_key_alias
+    if [ ! -z "$new_key_alias" ]; then
+        sed -i "s/export KEY_ALIAS=.*/export KEY_ALIAS=$new_key_alias/" ~/.bash_profile
+    fi
+
+    # Refresh environment variables
+    source ~/.bash_profile
 }
-
-
 
 function main_menu {
     while true
