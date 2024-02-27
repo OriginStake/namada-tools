@@ -10,7 +10,7 @@ NC='\033[0m' # No Color
 
 NEWCHAINID=shielded-expedition.88f17d1d14
 SCRIPT_NAME="namada-aio.sh"
-CURRENT_VERSION="1.3.9"
+CURRENT_VERSION="1.3.10"
 
 function manage_script {
     while true
@@ -431,9 +431,9 @@ function check_env_wallet_info {
             1) clear
                echo -e "=============================="
                echo -e "Check ${BOLD}$(tput bold)NAMADA ENV$(tput sgr0)${RESET}"
+               echo -e "These are your current environment variables in the ~/.bash_profile configuration file. These settings serve the purpose of installing Namada as well as using the Namada Binary. If you need to change any ENV, please select the Update ENV info menu below."
                echo -e "=============================="
                echo -e "\n"
-               echo "Checking ENV..."
                source ~/.bash_profile
                echo -e "NAMADA_TAG = \033[1;33m$NAMADA_TAG\033[0m"
                echo -e "CBFT = \033[1;33m$CBFT\033[0m"
