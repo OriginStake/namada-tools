@@ -10,7 +10,7 @@ NC='\033[0m' # No Color
 
 NEWCHAINID=shielded-expedition.88f17d1d14
 SCRIPT_NAME="namada-aio.sh"
-CURRENT_VERSION="1.3.8"
+CURRENT_VERSION="1.3.9"
 
 function manage_script {
     while true
@@ -149,19 +149,20 @@ function security_namada_menu {
 function check_node_role {
     BASE_DIR="/root/.local/share/namada"
     if [ -d "$BASE_DIR/$NAMADA_CHAIN_ID" ]; then
-        echo "You have successfully joined the ${BOLD}$(tput bold)Namada network$(tput sgr0)${RESET}"
+        echo -e "You have successfully joined the ${BOLD}Namada network${NC}"
         if [ -d "$BASE_DIR/pre-genesis" ]; then
-            echo "This node is : ${YELLOW}GENESIS VALIDATOR${NC}"
+            echo -e "This node is : ${YELLOW}GENESIS VALIDATOR${NC}"
         elif [ -f "$BASE_DIR/$NAMADA_CHAIN_ID/cometbft/config/priv_validator_key.json" ]; then
-            echo "This node is : ${GREEN}POST GENESIS VALIDATOR${NC}"
+            echo -e "This node is : ${GREEN}POST GENESIS VALIDATOR${NC}"
         else
-            echo "This node is : ${BLUE}FULL NODE${NC}"
+            echo -e "This node is : ${BLUE}FULL NODE${NC}"
         fi
     else
-        echo "Your node has not joined the ${BOLD}$(tput bold)Namada Network$(tput sgr0)${RESET}"
+        echo -e "Your node has not joined the ${BOLD}Namada Network${NC}"
         echo "Please select an option below to join Namada"
     fi
 }
+
 
 
 function join_namada_network_menu {
