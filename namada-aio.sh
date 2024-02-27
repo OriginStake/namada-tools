@@ -10,7 +10,7 @@ NC='\033[0m' # No Color
 
 NEWCHAINID=shielded-expedition.88f17d1d14
 SCRIPT_NAME="namada-aio.sh"
-CURRENT_VERSION="1.3.6.2"
+CURRENT_VERSION="1.3.6.3"
 
 function manage_script {
     while true
@@ -150,8 +150,7 @@ function join_namada_network_menu {
     while true
     do
         clear
-        echo -e "\n"
-        echo -e "==============================="
+        echo -e "=============================="
         echo -e "2/ Join ${BOLD}$(tput bold)Namada Network$(tput sgr0)${RESET}"
         echo -e "=============================="
 
@@ -389,17 +388,21 @@ function check_env_wallet_info {
         read env_wallet_option
         case $env_wallet_option in
             1) clear
+               echo -e "=============================="
+               echo -e "Check ${BOLD}$(tput bold)NAMADA ENV$(tput sgr0)${RESET}"
+               echo -e "=============================="
+               echo -e "\n"
                echo "Checking ENV..."
                source ~/.bash_profile
-               echo "NAMADA_TAG = $NAMADA_TAG"
-               echo "CBFT_TAG = $CBFT_TAG"
-               echo "NAMADA_CHAIN_ID = $NAMADA_CHAIN_ID"
-               echo "WALLET_ADDRESS = $WALLET_ADDRESS"
-               echo "NAMADA_TAG = $NAMADA_TAG"
-               echo "BASE_DIR = $BASE_DIR"
-               echo "VALIDATOR_ALIAS = $VALIDATOR_ALIAS"
-               echo "VALIDATOR_EMAIL = $VALIDATOR_EMAIL"
-               echo "KEY_ALIAS = $KEY_ALIAS"
+               echo -e "NAMADA_TAG = \033[1;33m$NAMADA_TAG\033[0m"
+               echo -e "CBFT_TAG = \033[1;33m$CBFT_TAG\033[0m"
+               echo -e "NAMADA_CHAIN_ID = \033[1;33m$NAMADA_CHAIN_ID\033[0m"
+               echo -e "WALLET_ADDRESS = \033[1;33m$WALLET_ADDRESS\033[0m"
+               echo -e "NAMADA_TAG = \033[1;33m$NAMADA_TAG\033[0m"
+               echo -e "BASE_DIR = \033[1;33m$BASE_DIR\033[0m"
+               echo -e "VALIDATOR_ALIAS = \033[1;33m$VALIDATOR_ALIAS\033[0m"
+               echo -e "VALIDATOR_EMAIL = \033[1;33m$VALIDATOR_EMAIL\033[0m"
+               echo -e "KEY_ALIAS = \033[1;33m$KEY_ALIAS\033[0m"
                ;;
             2) echo "This feature is currently under development.";;
             3) update_env_info;;
