@@ -10,7 +10,7 @@ NC='\033[0m' # No Color
 
 NEWCHAINID=shielded-expedition.88f17d1d14
 SCRIPT_NAME="namada-aio.sh"
-CURRENT_VERSION="1.3.6.7"
+CURRENT_VERSION="1.3.6.8"
 
 function manage_script {
     while true
@@ -176,7 +176,19 @@ function join_namada_network_menu {
                echo "Joined Namada as Post Genesis Validator."
                sleep 3;;
             3) echo "Joining Namada as Full Node..."
-               # Doing step Namada như Full Node
+               # Doing step Namada as Full Node
+               echo -n "Enter NAMADA_CHAIN_ID: "
+               read new_namada_chain_id
+               if [ ! -z "$new_namada_chain_id" ]; then
+                   if grep -q "export NAMADA_CHAIN_ID=" ~/.bash_profile; then
+                       # If the variable is already declared in the file, replace it.
+                       sed -i "s/export NAMADA_CHAIN_ID=.*/export NAMADA_CHAIN_ID=$new_namada_chain_id/" ~/.bash_profile
+                   else
+                       # If the variable is not declared in the file, append it.
+                       echo "export NAMADA_CHAIN_ID=$new_namada_chain_id" >> ~/.bash_profile
+                   fi
+               fi
+               NAMADA_NETWORK_CONFIGS_SERVER="https://github.com/anoma/namada-shielded-expedition/releases/download/shielded-expedition.88f17d1d14" namada client utils join-network --chain-id $NAMADA_CHAIN_ID
                echo "Joined Namada as Full Node."
                sleep 3;;
             4) echo "Going back to the previous menu..."
