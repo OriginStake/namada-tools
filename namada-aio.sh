@@ -10,7 +10,7 @@ NC='\033[0m' # No Color
 
 NEWCHAINID=shielded-expedition.88f17d1d14
 SCRIPT_NAME="namada-aio.sh"
-CURRENT_VERSION="1.3.6.9"
+CURRENT_VERSION="1.3.7"
 
 function manage_script {
     while true
@@ -146,6 +146,24 @@ function security_namada_menu {
     done
 }
 
+function check_node_role {
+    BASE_DIR="/root/.local/share/namada"
+    if [ -d "$BASE_DIR/$NAMADA_CHAIN_ID" ]; then
+        echo "Bạn đã join vào mạng lưới Namada thành công"
+        if [ -d "$BASE_DIR/pre-genesis" ]; then
+            echo "This node is : GENESIS VALIDATOR"
+        elif [ -f "$BASE_DIR/$NAMADA_CHAIN_ID/cometbft/config/priv_validator_key.json" ]; then
+            echo "This node is : POST GENESIS VALIDATOR"
+        else
+            echo "This node is : FULL NODE"
+        fi
+    else
+        echo "Node của bạn chưa Join vào Namada Network"
+        echo "Vui lòng chọn Option bên dưới để join vào Namada"
+    fi
+}
+
+
 function join_namada_network_menu {
     while true
     do
@@ -158,6 +176,10 @@ function join_namada_network_menu {
         echo -e "- ${YELLOW}Genesis Validator${NC}: This role is for validators included in the Genesis file and can join/rejoin if listed in the Genesis list. If you are not selected in the Genesis list, this option will not be effective."
         echo -e "- ${GREEN}Post Genesis Validator${NC}: This role is for validators/nodes that can join after the Genesis time starts (from Block 1 onwards). You can join Namada as a Validator at any time with this option."
         echo -e "- ${BLUE}Full Node${NC}: If you only need to become a data node to serve queries from the Namada ledger or provide RPC/Indexer endpoints for DApps, this is the appropriate choice"
+        echo -e "\n"
+
+        check_node_role
+        
         echo -e "\n"
         echo "Choose an option:"
         echo -e "1/ Join Namada as ${YELLOW}Genesis Validator${NC}"
@@ -181,7 +203,7 @@ function join_namada_network_menu {
                if [ -z "$NAMADA_CHAIN_ID" ]; then
                    echo -n "Enter NAMADA_CHAIN_ID: "
                else
-                   echo -n "Current NAMADA_CHAIN_ID is $NAMADA_CHAIN_ID. If you want to change it, enter new NAMADA_CHAIN_ID: "
+                   echo -n "Current NAMADA_CHAIN_ID is $NAMADA_CHAIN_ID. Leave blank to keep the current value. If you want to change it, enter new NAMADA_CHAIN_ID: "
                fi
                read new_namada_chain_id
                if [ ! -z "$new_namada_chain_id" ]; then
