@@ -10,7 +10,7 @@ NC='\033[0m' # No Color
 
 NEWCHAINID=shielded-expedition.88f17d1d14
 SCRIPT_NAME="namada-aio.sh"
-CURRENT_VERSION="1.4.0"
+CURRENT_VERSION="1.4.1"
 
 function manage_script {
     while true
@@ -41,7 +41,7 @@ function namada_service_menu {
     while true
     do
         echo "Choose an option:"
-        echo "1/ Start Namada Service as a Post-Genesis"
+        echo "1/ Start Namada Service"
         echo "2/ Stop Namada Service"
         echo "3/ Check Namada Service Status"
         echo "4/ Remove all Namada install (CAUTION)"
@@ -49,9 +49,10 @@ function namada_service_menu {
         echo -n "Enter your choice [1-5]: "
         read service_option
         case $service_option in
-            1) echo "Starting Namada Service as a Post-Genesis..."
-               cd $HOME && namada client utils join-network --chain-id $NEWCHAINID
-               sudo systemctl enable namadad && sudo systemctl start namadad
+            1) echo "Starting Namada Service..."
+               sudo systemctl daemon-reload
+               sudo systemctl enable namadad
+               sudo systemctl start namadad
                echo "Namada Service has been started."
                sleep 3;;
             2) echo "Stopping Namada Service..."
