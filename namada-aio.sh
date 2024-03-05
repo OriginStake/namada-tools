@@ -10,7 +10,7 @@ NC='\033[0m' # No Color
 
 NEWCHAINID=shielded-expedition.88f17d1d14
 SCRIPT_NAME="namada-aio.sh"
-CURRENT_VERSION="1.4.1"
+CURRENT_VERSION="1.4.2"
 
 function manage_script {
     while true
@@ -60,7 +60,7 @@ function namada_service_menu {
                echo "Namada Service has been stopped."
                sleep 3;;
             3) echo "Checking Namada Service status..."
-               systemctl status namadad
+               sudo systemctl status namadad --no-pager
                echo "Press any key to continue..."
                read -n 1 -s;;
             4) echo "You have chosen 'Remove all Namada install (CAUTION)'."
